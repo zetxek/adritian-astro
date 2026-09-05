@@ -99,7 +99,7 @@ export const siteConfig: SiteConfig = {
     skills: true,
     education: true,
     clientAndWork: true,
-    testimonial: false,
+    testimonial: true,
     contact: false,
     newsletter: false,
     extraContent: true,

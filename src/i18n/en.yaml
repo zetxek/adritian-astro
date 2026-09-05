@@ -37,6 +37,8 @@
 "education_title": "Education"
 ## Homepage skills
 "skills_years": "years"
+## Homepage testimonial
+"testimonials_title": "Testimonials"
 ## Homepage extra content (text-section demo)
 "extra_content_title": "Extra (centered) content"
 "extra_content_body": "You can also use the <code>TextSection</code> component to add centered texts."

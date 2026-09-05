@@ -37,6 +37,8 @@
 "education_title": "Educación"
 ## Homepage skills
 "skills_years": "años"
+## Homepage testimonial
+"testimonials_title": "Lo que dicen de mí"
 ## Homepage extra content (text-section demo)
 "extra_content_title": "Contenido extra (centrado)"
 "extra_content_body": "También puedes usar el componente <code>TextSection</code> para añadir textos centrados."

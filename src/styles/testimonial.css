@@ -1,0 +1,44 @@
+/* Ported from assets/scss/_raditian.scss — .testimonial */
+.icon-quote-left {
+  display: block;
+  margin-bottom: 16px;
+  color: #478079;
+}
+
+@media (min-width: 768px) {
+  .icon-quote-left {
+    margin-bottom: 24px;
+  }
+}
+
+.testimonial__author {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.testimonial__author-image {
+  margin-right: 16px;
+  width: 52px;
+  height: 52px;
+  border-radius: 100%;
+  object-fit: cover;
+}
+
+.testimonial__author-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.testimonial__author-info h3 {
+  font-size: 16px;
+  margin-bottom: 0;
+}
+
+.testimonial__author-info span {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ae1b13;
+}

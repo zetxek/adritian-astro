@@ -1,0 +1,58 @@
+---
+import { Picture } from 'astro:assets';
+import { render } from 'astro:content';
+import { getLocalizedCollection } from '../i18n/mergeContent';
+import { useTranslations } from '../i18n';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const testimonials = (await getLocalizedCollection('testimonial', locale)).sort(
+  (a, b) => b.entry.data.date.valueOf() - a.entry.data.date.valueOf()
+);
+
+const rendered = await Promise.all(
+  testimonials.map(async ({ entry, isFallback }) => ({ entry, isFallback, Content: (await render(entry)).Content }))
+);
+---
+
+<section id="testimonial" class="section rad-animation-group section--border-bottom">
+  <div class="container">
+    <h2 class="rad-fade-down">{t('testimonials_title')}</h2>
+    <div class="row row--padded mb-0 rad-fade-down">
+      {
+        rendered.map(({ entry, isFallback, Content }) => (
+          <div class="col-12 col-md-4 mb-5 mb-md-0 testimonial container" data-locale={isFallback ? 'en (fallback)' : locale}>
+            <svg class="icon-quote-left" viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
+              <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 4.995-3.674 4.995-6.849h-5V3h9.983zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 5-3.674 5-6.849h-5V3h9.996z" />
+            </svg>
+            <div class="testimonial__quote">
+              <Content />
+            </div>
+            <div class="testimonial__author row gx-0">
+              <Picture
+                src={entry.data.image}
+                alt={entry.data.name}
+                class="testimonial__author-image picture testimonial col-2"
+                width={52}
+                height={52}
+                densities={[1, 2]}
+                formats={['webp']}
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="testimonial__author-info col-10">
+                <h3>{entry.data.name}</h3>
+                <span>{entry.data.position}</span>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
