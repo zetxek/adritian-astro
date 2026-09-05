@@ -38,6 +38,141 @@ body {
   background-color: var(--bs-body-bg);
 }
 
+/* Ported from assets/scss/_raditian.scss (html body) — typography base */
+body {
+  font-family: Helvetica, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  letter-spacing: 0.3px;
+  font-weight: 400;
+}
+
+/* Ported from assets/scss/adritian.scss — heading scale (font-weight/line-height
+   shared block + h1/h2/h3/h4 sizes + the homepage hero's .display-1). Headings
+   have no color of their own — they inherit body's --bs-body-color so light/dark
+   mode falls out of the Task 1 fix automatically. */
+.h1, .h2, .h3, .h4, .h5, .h6,
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 8px;
+}
+
+h1, h2 {
+  margin-bottom: 16px;
+}
+
+h2 {
+  font-size: 32px;
+}
+
+h3, h4 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+@media (min-width: 992px) {
+  .h1, .h2, .h3, .h4, .h5, .h6,
+  h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    font-size: 36px;
+  }
+
+  h3, h4 {
+    font-size: 32px;
+  }
+}
+
+.display-1 {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: normal;
+}
+
+@media (min-width: 992px) {
+  .display-1 {
+    font-size: 60px;
+  }
+}
+
+p {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+b, strong {
+  font-weight: 600;
+}
+
+/* Ported from assets/scss/_raditian.scss — .btn base + variants */
+.btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0;
+  white-space: nowrap;
+  line-height: 1;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 14px 15px;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #000;
+  border-color: #000;
+  transition: border-color 0.35s ease, color 0.35s ease, background-color 0.35s ease;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  color: #000;
+  background-color: transparent;
+  border-color: #000;
+}
+
+[data-bs-theme='dark'] .btn-primary {
+  color: #000;
+  background-color: #fff;
+  border-color: #fff;
+}
+
+[data-bs-theme='dark'] .btn-primary:hover,
+[data-bs-theme='dark'] .btn-primary:focus {
+  color: #fff;
+  background-color: transparent;
+  border-color: #fff;
+}
+
+.btn-frameless {
+  color: #000;
+  background-color: transparent;
+  border-color: transparent;
+  transition: border-color 0.35s ease, background-color 0.35s ease, color 0.35s ease;
+}
+
+.btn-frameless:hover,
+.btn-frameless:focus {
+  background-color: transparent;
+  border-color: #000;
+  color: #000;
+}
+
+[data-bs-theme='dark'] .btn-frameless {
+  color: #fff;
+  border-color: #fff;
+}
+
+[data-bs-theme='dark'] .btn-frameless:hover,
+[data-bs-theme='dark'] .btn-frameless:focus {
+  background-color: #fff;
+  border-color: #fff;
+  color: #181818;
+}
+
 /* Ported from assets/scss/_variables.scss — brand link color */
 :root {
   --bs-link-color: #478079;

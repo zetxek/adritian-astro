@@ -9,6 +9,25 @@
   }
 }
 
+/* Ported from assets/scss/_raditian.scss — .contact h1..h6 { color: $black } */
+.contact h1,
+.contact h2,
+.contact h3,
+.contact h4,
+.contact h5,
+.contact h6 {
+  color: #000;
+}
+
+[data-bs-theme='dark'] .contact h1,
+[data-bs-theme='dark'] .contact h2,
+[data-bs-theme='dark'] .contact h3,
+[data-bs-theme='dark'] .contact h4,
+[data-bs-theme='dark'] .contact h5,
+[data-bs-theme='dark'] .contact h6 {
+  color: #eee;
+}
+
 .contact__info {
   padding-top: 50px;
 }
