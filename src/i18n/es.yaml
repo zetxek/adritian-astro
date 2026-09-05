@@ -1,0 +1,28 @@
+## Meta
+"meta_title": "Adritian"
+## Header
+"logo_alt": "Logotipo de Adritian"
+"home": "Inicio"
+"skipToMainContent": "Saltar al contenido principal"
+"toggle_navigation": "Mostrar navegación"
+"primary_navigation": "Navegación principal"
+## Footer
+"footer_navigation": "Navegación del pie"
+"language": "Idioma"
+"toggle_theme": "Seleccionar esquema de color"
+"theme_light": "☀️ Claro"
+"theme_dark": "🌑 Oscuro"
+"theme_auto": "✨ Auto"
+## Homepage head
+"head_title": "Adritian — Versión en Astro"
+"head_description": "Versión en Astro del tema Hugo Adritian."
+## Homepage experience
+"experience_title": "Mi experiencia laboral"
+"experience_description": "Un resumen de los puestos que he ocupado, con detalles sobre responsabilidades y logros."
+"experience_button": "LinkedIn"
+"experience_button_url": "https://linkedin.com/in/adrianmoreno"
+"experience_button2": "Descargar currículum"
+"experience_button2_url": "/resume.pdf"
+"experience_button3": "Ver todo"
+"experience_button3_url": "/experience"
+"experience_fallback_notice": "Mostrado en inglés — todavía no traducido."

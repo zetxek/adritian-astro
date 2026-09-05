@@ -1,0 +1,44 @@
+---
+import { locales, useTranslations, switchLocalePath } from '../i18n';
+
+interface Props {
+  locale: string;
+  currentPath: string;
+  placement: 'header' | 'footer';
+}
+
+const { locale, currentPath, placement } = Astro.props;
+const t = useTranslations(locale);
+
+const labels: Record<string, string> = { en: 'English', es: 'Español' };
+const otherLocales = locales.filter((l) => l !== locale);
+const direction = placement === 'footer' ? 'dropup' : '';
+---
+
+<div id={`${placement}-language-selector`} class={`d-grid gap-2 col-6 mx-auto nav-link dropdown ${direction}`}>
+  <button
+    class="btn btn-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center show"
+    id={`btn-select-language-${placement}`}
+    type="button"
+    aria-expanded="false"
+    aria-controls={`languages-dropdown-${placement}`}
+    aria-haspopup="true"
+    data-bs-toggle="dropdown"
+    data-bs-display="static"
+    aria-label={t('language')}
+  >
+    <span class="label">{t('language')}</span>
+  </button>
+  <ul class={`dropdown-menu dropdown-menu-end ${direction}`} id={`languages-dropdown-${placement}`} data-bs-popper="static">
+    <li class="dropdown-item current selected">
+      <span>✔️ {labels[locale] ?? locale}</span>
+    </li>
+    {otherLocales.map((other) => (
+      <li class="dropdown-item choice">
+        <a class="dropdown-item translation btn-link d-flex align-items-center show" title={labels[other] ?? other} href={switchLocalePath(currentPath, other)}>
+          {labels[other] ?? other}
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>

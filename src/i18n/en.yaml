@@ -1,0 +1,28 @@
+## Meta
+"meta_title": "Adritian"
+## Header
+"logo_alt": "Adritian logo"
+"home": "Home"
+"skipToMainContent": "Skip to main content"
+"toggle_navigation": "Toggle navigation"
+"primary_navigation": "Primary navigation"
+## Footer
+"footer_navigation": "Footer navigation"
+"language": "Language"
+"toggle_theme": "Toggle theme"
+"theme_light": "☀️ Light"
+"theme_dark": "🌑 Dark"
+"theme_auto": "✨ Auto"
+## Homepage head
+"head_title": "Adritian — Astro port"
+"head_description": "Astro port of the Adritian Hugo theme."
+## Homepage experience
+"experience_title": "My job experience"
+"experience_description": "A summary of the roles I've held, with details on responsibilities and achievements."
+"experience_button": "LinkedIn"
+"experience_button_url": "https://linkedin.com/in/adrianmoreno"
+"experience_button2": "Download resume"
+"experience_button2_url": "/resume.pdf"
+"experience_button3": "View all"
+"experience_button3_url": "/experience"
+"experience_fallback_notice": "Shown in English — not yet translated."

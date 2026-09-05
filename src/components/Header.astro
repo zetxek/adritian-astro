@@ -1,0 +1,58 @@
+---
+import SkipToContent from './SkipToContent.astro';
+import LanguageSelector from './LanguageSelector.astro';
+import ThemeSelector from './ThemeSelector.astro';
+import { useTranslations } from '../i18n';
+import { siteConfig } from '../config/site';
+
+interface Props {
+  locale: string;
+  currentPath: string;
+}
+
+const { locale, currentPath } = Astro.props;
+const t = useTranslations(locale);
+const menu = siteConfig.headerMenu[locale] ?? siteConfig.headerMenu.en;
+---
+
+<SkipToContent locale={locale} />
+
+<header class="header fixed-top" id="header">
+  <div class="container">
+    <nav class="navbar bd-navbar navbar-expand-lg navbar-light p-0" aria-label={t('primary_navigation')}>
+      <div class="container-fluid">
+        <a class="navbar-brand mx-auto" href={`/${locale}/`}>
+          <span>{siteConfig.logo.text1}</span>
+          <span>{siteConfig.logo.text2}</span>
+        </a>
+        <button
+          class="navbar-toggler collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent, #header"
+          aria-controls="navbarSupportedContent header"
+          aria-expanded="false"
+          aria-label={t('toggle_navigation')}
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-lg-auto">
+            {menu.map((item) => (
+              <li class="nav-item">
+                <a class="nav-link" href={item.url}>{item.name.toUpperCase()}</a>
+              </li>
+            ))}
+
+            <li class="dropdown language-selector nav-item">
+              <LanguageSelector locale={locale} currentPath={currentPath} placement="header" />
+            </li>
+            <li class="dropdown theme-selector nav-item">
+              <ThemeSelector locale={locale} placement="header" />
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>

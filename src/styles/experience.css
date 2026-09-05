@@ -66,3 +66,22 @@
   font-size: 1.5rem;
   font-weight: 600;
 }
+
+.experience__fallback-badge {
+  display: inline-block;
+  margin-top: 0.25rem;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.75rem;
+  color: #7a5b00;
+  background: #fff3cd;
+  border: 1px solid #ffe69c;
+  border-radius: 0.25rem;
+}
+
+.container-experience .lead {
+  margin-bottom: 1.5rem;
+}
+
+.all-experience-container {
+  margin-top: 1.5rem;
+}

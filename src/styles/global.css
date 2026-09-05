@@ -1,0 +1,174 @@
+/* Ported from assets/scss/_theme-init.scss — dark/light [data-bs-theme] init + transitions */
+:root[data-bs-theme='dark'] {
+  color-scheme: dark;
+  --bs-body-color: #fff;
+  --bs-body-bg: #181818;
+}
+
+:root[data-bs-theme='light'] {
+  color-scheme: light;
+  --bs-body-color: #000;
+  --bs-body-bg: #fff;
+}
+
+html {
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+body, p, h1, h2, h3, h4, h5, h6, a {
+  transition: color 0.2s ease-in-out;
+}
+
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *:before,
+html.theme-transition *:after {
+  transition: all 0s !important;
+}
+
+html[data-theme-auto='true'] {
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+[data-bs-theme='dark'] body {
+  color: #fff;
+  background-color: #181818;
+}
+
+/* Ported from assets/scss/_variables.scss — brand link color */
+:root {
+  --bs-link-color: #478079;
+  --bs-link-hover-color: #336059;
+}
+
+a {
+  color: var(--bs-link-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--bs-link-hover-color);
+}
+
+[data-bs-theme='dark'] a:hover {
+  color: #66b2a9;
+}
+
+/* Ported from assets/scss/adritian.scss — skip-to-content link */
+.skip-to-content-link {
+  position: absolute;
+  left: -9999px;
+  z-index: 999;
+  padding: 1em;
+  background-color: #fff;
+  color: #000;
+  opacity: 0;
+}
+
+.skip-to-content-link:focus,
+.skip-to-content-link:focus-visible {
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 1;
+}
+
+/* Ported from assets/scss/_navbar.scss — bd-navbar */
+.header {
+  padding: 0.75rem 0;
+  background-color: transparent;
+}
+
+.header .navbar-brand {
+  color: var(--bs-body-color);
+  transition: transform 0.2s ease-in-out;
+}
+
+.header .navbar-brand:hover {
+  transform: scale(1.04);
+}
+
+.header .navbar-brand span:first-child {
+  color: var(--bs-link-color);
+}
+
+.header .navbar-toggler {
+  padding: 0;
+  border: 0;
+}
+
+.header .navbar-toggler:focus {
+  box-shadow: none;
+}
+
+.header .dropdown-menu {
+  --bs-dropdown-min-width: 12rem;
+  --bs-dropdown-padding-x: 0.25rem;
+  --bs-dropdown-padding-y: 0.25rem;
+  border-radius: 0.5rem;
+}
+
+.header .dropdown-menu-end {
+  --bs-dropdown-min-width: 8rem;
+}
+
+/* Ported from assets/scss/_menu.scss — prevents dropdown clipping (theme issue #206) */
+.header .navbar .nav-item.language-selector,
+.header .navbar .nav-item.theme-selector {
+  overflow: visible;
+}
+
+.header .navbar .nav-item.language-selector .nav-link,
+.header .navbar .nav-item.theme-selector .nav-link {
+  padding: 0;
+}
+
+.language-selector li.choice,
+.theme-selector li.choice {
+  padding: 0;
+}
+
+.dropdown-item.selected {
+  font-weight: bold;
+}
+
+a.dropdown-item.translation,
+li.dropdown-item.current.selected {
+  width: 100%;
+  padding: 4px 10px;
+}
+
+li.dropdown-item.choice a {
+  padding-left: 30px;
+}
+
+/* Ported from assets/scss/_raditian.scss — footer */
+.footer {
+  padding-bottom: 60px;
+  background-color: #000;
+  color: #fff;
+}
+
+.footer p,
+.footer h1,
+.footer h2,
+.footer h3,
+.footer h4,
+.footer h5,
+.footer h6 {
+  color: #fff;
+}
+
+.footer .items {
+  padding-top: 60px;
+}
+
+.footer_links .nav-link {
+  color: #fff;
+}
+
+@media (min-width: 992px) {
+  .ml-lg-auto,
+  .mx-lg-auto {
+    margin-left: auto !important;
+  }
+}

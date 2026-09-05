@@ -1,0 +1,14 @@
+---
+import { useTranslations } from '../i18n';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<a href="#main-content" class="skip-to-content-link" aria-label={t('skipToMainContent')}>
+  {t('skipToMainContent')}
+</a>

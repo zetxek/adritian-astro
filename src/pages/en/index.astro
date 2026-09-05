@@ -1,0 +1,13 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ExperienceSection from '../../components/ExperienceSection.astro';
+import '../../styles/experience.css';
+import { useTranslations } from '../../i18n';
+
+const locale = 'en';
+const t = useTranslations(locale);
+---
+
+<Layout locale={locale} title={t('head_title')} description={t('head_description')}>
+  <ExperienceSection locale={locale} />
+</Layout>

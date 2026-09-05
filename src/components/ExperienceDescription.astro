@@ -1,0 +1,30 @@
+---
+import { useTranslations } from '../i18n';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<div class="container-experience">
+  <div class="row">
+    <h2>{t('experience_title')}</h2>
+    <div class="lead">{t('experience_description')}</div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 col-lg-6">
+      <a href={t('experience_button_url')} class="btn btn-primary btn-block w-100" target="_blank" rel="noopener noreferrer">
+        {t('experience_button')}
+      </a>
+    </div>
+    <div class="col-12 col-lg-6">
+      <a href={t('experience_button2_url')} class="btn btn-frameless w-100" target="_blank" rel="noopener noreferrer">
+        {t('experience_button2')}
+      </a>
+    </div>
+  </div>
+</div>

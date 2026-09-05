@@ -1,8 +1,8 @@
 ---
 import { getLocalizedCollection } from '../i18n/mergeContent';
 import { useTranslations } from '../i18n';
-import { siteConfig } from '../config/site';
 import ExperienceJobCard from './ExperienceJobCard.astro';
+import ExperienceDescription from './ExperienceDescription.astro';
 
 interface Props {
   locale: string;
@@ -13,29 +13,22 @@ const t = useTranslations(locale);
 
 const localized = await getLocalizedCollection('experience', locale);
 const sorted = localized.sort((a, b) => b.entry.data.date.valueOf() - a.entry.data.date.valueOf());
-const capped = sorted.slice(0, siteConfig.experience.homepageCount);
-const hasMore = sorted.length > capped.length;
 ---
 
-<section id="experience-section" class="section-experience section section--border-bottom">
+<section id="experience-list" class="section-experience section section--border-bottom">
   <div class="row flex-column-reverse flex-md-row">
-    <div class="experience-list col-12 mt-5 mt-sm-0">
+    <div class="experience-list col-12 col-md-6">
       <h2 class="section__title mb-4">{t('experience_title')}</h2>
 
-      {capped.map(({ entry, isFallback }, index) => (
+      {sorted.map(({ entry, isFallback }, index) => (
         <>
           <ExperienceJobCard entry={entry} isFallback={isFallback} locale={locale} />
-          {index !== capped.length - 1 && <hr class="d-block d-md-none my-4" />}
+          {index !== sorted.length - 1 && <hr class="d-block d-md-none my-4" />}
         </>
       ))}
-
-      {hasMore && (
-        <div class="all-experience-container">
-          <a href={`/${locale}/experience/`} class="btn btn-primary btn-all-experience">
-            {t('experience_button3')}
-          </a>
-        </div>
-      )}
+    </div>
+    <div class="experience-description col-12 col-md-6">
+      <ExperienceDescription locale={locale} />
     </div>
   </div>
 </section>
