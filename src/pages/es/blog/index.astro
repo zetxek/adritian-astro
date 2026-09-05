@@ -15,6 +15,11 @@ const page = paginate(posts, { pageSize: siteConfig.blog.pagerSize, currentPage:
 const tags = getTagCounts(posts);
 ---
 
-<Layout locale={locale} title={t('blog_title')} description={t('blog_description')}>
+<Layout
+  locale={locale}
+  title={t('blog_title')}
+  description={t('blog_description')}
+  breadcrumbs={[{ name: t('blog_title'), url: `/${locale}/blog/` }]}
+>
   <BlogListPage locale={locale} page={page} recentPosts={posts} tags={tags} />
 </Layout>

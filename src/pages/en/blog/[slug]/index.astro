@@ -3,7 +3,9 @@ import { render } from 'astro:content';
 import Layout from '../../../../layouts/Layout.astro';
 import BlogPost from '../../../../components/BlogPost.astro';
 import { siteConfig } from '../../../../config/site';
+import { useTranslations } from '../../../../i18n';
 import { getSortedBlogPosts, slugOf, getRelatedPosts } from '../../../../lib/blog';
+import { buildBlogPostingJsonLd, absoluteUrl } from '../../../../lib/seo';
 import '../../../../styles/blog-post.css';
 import '../../../../styles/toc.css';
 import '../../../../styles/social-sharing.css';
@@ -12,6 +14,7 @@ import '../../../../styles/comments.css';
 import '../../../../styles/reading-progress.css';
 
 const locale = 'en';
+const t = useTranslations(locale);
 
 export async function getStaticPaths() {
   const posts = await getSortedBlogPosts('en');
@@ -29,9 +32,26 @@ const idx = allPosts.findIndex(({ entry: e }) => slugOf(e) === slugOf(entry));
 const prevPost = idx > 0 ? allPosts[idx - 1] : null;
 const nextPost = idx >= 0 && idx < allPosts.length - 1 ? allPosts[idx + 1] : null;
 const canonicalUrl = new URL(`/${locale}/blog/${slugOf(entry)}/`, siteConfig.baseURL).toString();
+const blogPostingJsonLd = buildBlogPostingJsonLd({
+  title: entry.data.title,
+  description: entry.data.description,
+  url: canonicalUrl,
+  datePublished: entry.data.date,
+  image: entry.data.cover ? absoluteUrl(entry.data.cover.src) : undefined,
+});
 ---
 
-<Layout locale={locale} title={entry.data.title} description={entry.data.description}>
+<Layout
+  locale={locale}
+  title={entry.data.title}
+  description={entry.data.description}
+  image={entry.data.cover?.src}
+  breadcrumbs={[
+    { name: t('blog_title'), url: `/${locale}/blog/` },
+    { name: entry.data.title, url: `/${locale}/blog/${slugOf(entry)}/` },
+  ]}
+  jsonLd={[blogPostingJsonLd]}
+>
   <BlogPost
     locale={locale}
     entry={entry}

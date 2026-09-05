@@ -1,24 +1,56 @@
 ---
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/global.css';
+import '../styles/breadcrumbs.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { useTranslations } from '../i18n';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { useTranslations, locales, defaultLocale, switchLocalePath } from '../i18n';
 import { siteConfig } from '../config/site';
+import { buildSiteJsonLd, buildBreadcrumbJsonLd, absoluteUrl, type BreadcrumbItem } from '../lib/seo';
 
 interface Props {
   locale: string;
   title?: string;
   description?: string;
+  image?: string;
+  /** Ancestors + current page (Home is added automatically), e.g.
+   * [{ name: 'Blog', url: '/en/blog/' }, { name: 'Getting started', url: '/en/blog/getting-started/' }] */
+  breadcrumbs?: BreadcrumbItem[];
+  /** Extra page-specific JSON-LD objects (e.g. BlogPosting) appended after the
+   * site-wide WebSite/Person schema this layout always emits. */
+  jsonLd?: Record<string, unknown>[];
 }
 
-const { locale, title, description } = Astro.props;
+const { locale, title, description, image, breadcrumbs, jsonLd = [] } = Astro.props;
 const t = useTranslations(locale);
 
 const pageTitle = title ? `${title} | ${siteConfig.title}` : siteConfig.title;
 const pageDescription = description ?? t('head_description');
 const currentPath = Astro.url.pathname;
 const canonicalURL = new URL(currentPath, siteConfig.baseURL);
+const ogImage = absoluteUrl(image ?? siteConfig.seo.siteImage);
+
+// hreflang alternates: every locale-prefixed route resolves for every locale
+// (content falls back to the default locale — see mergeContent.ts), so the
+// alternate for each locale is a straight locale-segment swap of the current
+// path. x-default points at the default-locale (en) version, matching common
+// multilingual SEO practice (Hugo's own head.html doesn't emit x-default —
+// this is an intentional improvement, see NOTE.md).
+const alternateLinks = locales.map((altLocale) => ({
+  hreflang: altLocale,
+  href: new URL(switchLocalePath(currentPath, altLocale), siteConfig.baseURL).toString(),
+}));
+const xDefaultHref = new URL(switchLocalePath(currentPath, defaultLocale), siteConfig.baseURL).toString();
+
+const homeBreadcrumb: BreadcrumbItem = { name: t('home'), url: `/${locale}/` };
+const breadcrumbItems = breadcrumbs ? [homeBreadcrumb, ...breadcrumbs] : null;
+
+const allJsonLd = [
+  ...buildSiteJsonLd(locale, pageDescription),
+  ...(breadcrumbItems ? [buildBreadcrumbJsonLd(breadcrumbItems.map((b) => ({ name: b.name, url: absoluteUrl(b.url) })))] : []),
+  ...jsonLd,
+];
 ---
 
 <!DOCTYPE html>
@@ -32,6 +64,12 @@ const canonicalURL = new URL(currentPath, siteConfig.baseURL);
     <meta name="description" content={pageDescription} />
     <link rel="canonical" href={canonicalURL} />
 
+    {alternateLinks.map((alt) => (
+      <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={xDefaultHref} />
+    <link rel="alternate" type="application/rss+xml" href={`/${locale}/rss.xml`} title={`${siteConfig.title} (${locale})`} />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
 
@@ -39,9 +77,15 @@ const canonicalURL = new URL(currentPath, siteConfig.baseURL);
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
     <meta property="og:url" content={canonicalURL} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImage} />
+
+    {allJsonLd.map((entry) => (
+      <script type="application/ld+json" set:html={JSON.stringify(entry)} />
+    ))}
 
     <!-- Anti-flash of unstyled theme: set data-bs-theme before first paint, mirrors head.html's inline snippet -->
     <script is:inline>
@@ -59,6 +103,8 @@ const canonicalURL = new URL(currentPath, siteConfig.baseURL);
   </head>
   <body>
     <Header locale={locale} currentPath={currentPath} />
+
+    {breadcrumbItems && <Breadcrumbs items={breadcrumbItems} />}
 
     <main id="main-content" class="container" tabindex="-1">
       <slot />

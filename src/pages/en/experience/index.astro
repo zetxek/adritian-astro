@@ -8,6 +8,11 @@ const locale = 'en';
 const t = useTranslations(locale);
 ---
 
-<Layout locale={locale} title={t('experience_title')} description={t('experience_description')}>
+<Layout
+  locale={locale}
+  title={t('experience_title')}
+  description={t('experience_description')}
+  breadcrumbs={[{ name: t('experience_title'), url: `/${locale}/experience/` }]}
+>
   <ExperienceList locale={locale} />
 </Layout>

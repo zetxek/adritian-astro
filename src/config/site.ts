@@ -117,6 +117,17 @@ export interface SiteConfig {
       theme?: string;
     };
   };
+  /** Matches Hugo's `params.seo` surface (seo/jsonld.html) — feeds the
+   * site-wide WebSite/Person JSON-LD emitted on every page. */
+  seo: {
+    /** Absolute-from-root path to the site's default OG/JSON-LD image. */
+    siteImage: string;
+    person: {
+      name: string;
+      url: string;
+      sameAs: string[];
+    };
+  };
 }
 
 export const siteConfig: SiteConfig = {
@@ -222,6 +233,14 @@ export const siteConfig: SiteConfig = {
       categoryId: 'DIC_demo',
       mapping: 'pathname',
       theme: 'preferred_color_scheme',
+    },
+  },
+  seo: {
+    siteImage: '/images/og-img.png',
+    person: {
+      name: 'Adrián Moreno Peña',
+      url: 'https://www.adrianmoreno.info',
+      sameAs: ['https://github.com/zetxek'],
     },
   },
 };
