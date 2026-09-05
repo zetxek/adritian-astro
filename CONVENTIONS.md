@@ -1,7 +1,7 @@
 # Conventions — Adritian Astro port
 
-Distilled from `spikes/001-experience-section`, `spikes/002-i18n`, and
-`spikes/003-image-pipeline`. Every pattern below is **validated** (built and
+Distilled from `docs/spikes/001-experience-section`, `docs/spikes/002-i18n`, and
+`docs/spikes/003-image-pipeline`. Every pattern below is **validated** (built and
 inspected in `dist/`, not just theorized). Follow these when porting further
 Hugo sections/partials in later phases.
 
