@@ -340,4 +340,53 @@ except current) × 2 placements (header+footer).
 - RTL (`dir="rtl"` for `he`, `bootstrap.rtl.min.css`, logical-property CSS
   audit) not yet done as of this checkpoint — see below/next commit.
 - No demo/polish pass, no i18n catalog/coverage page — deferred to Phase 7
+
+# Phase 8 — design-system parity fix (status: in progress)
+
+Deployed review found the global design system (typography/colors/navbar/
+experience interaction) was never fully ported from the Hugo theme's
+`assets/scss/`, even though per-section CSS existed. This phase fixes that
+against the Hugo theme repo as source of truth.
+
+**Task 1 — theme-init**: `global.css`'s `body` color/bg previously relied
+on Bootstrap's own `body { color: var(--bs-body-color) }` rule to read our
+theme custom properties. Replaced with an explicit, unconditional `body {
+color: var(--bs-body-color); background-color: var(--bs-body-bg) }` so
+correctness doesn't depend on Bootstrap's internal CSS. (The reported
+"white text on white background" bug did not reproduce on `main` at the
+start of this phase — light mode already measured `rgb(0,0,0)` on
+`rgb(255,255,255)` — but the fix is still applied for exact source-of-truth
+parity and defense against future Bootstrap upgrades.)
+
+**Task 2 — typography**: Ported the Helvetica font stack, the h1-h6/
+`.display-1` size-and-weight scale (`.display-1` renders 36px/800 mobile,
+60px/800 desktop — used by the homepage hero `<h1 class="display-1">`),
+`.btn`/`.btn-primary`/`.btn-frameless` (14px/700, black-on-white ⇄
+white-on-black hover swap, inverted in dark mode), and `.contact h1-h6 {
+color: black }` (with a dark-mode counterpart) from `_raditian.scss` /
+`adritian.scss`. Link colors and footer text color were already correctly
+ported in an earlier phase.
+
+**Task 3 — navbar parity**: `siteConfig.headerMenu` (`src/config/site.ts`)
+now has Hugo's 8-item `exampleSite/hugo.toml` `[[menus.header]]` set (Home,
+About, Skills, Portfolio, Showcase, How-to, email/Contact icon, search
+icon) instead of an ad-hoc 4-item list. Deviations from Hugo, both because
+this port has no standalone `/skills` or `/showcase` page (they're
+homepage-only sections, per Phase 3's NOTE.md decision):
+  - "Skills" links to `#skills-section` instead of `/skills`.
+  - "Showcase" links to `#showcase` instead of `/showcase`.
+  - The email/search nav items use inline SVG icons + a visually-hidden
+    label, not Hugo's `icon-email`/`icon-search` icon-font glyphs — the
+    Adritian icon font (`static/fonts/adritian-icons.woff*`) was never
+    ported to this Astro build, and porting a whole icon font is out of
+    scope for this phase. Flagging as a gap for a future phase if more
+    icon-driven UI is ported.
+  - `Header.astro` only computes `.active` for real page paths (`/`,
+    `/blog/`, `/search/`) — the anchor items (About/Skills/Portfolio/
+    Showcase/Contact) would need scroll-spy JS to know which section is
+    in view, which is out of scope here.
+  - `assets/js/navbar-overflow.js` (Hugo's "More" dropdown for overflowing
+    nav items) was **not** ported in this pass — the header now has 8
+    items instead of 4, which makes overflow at narrow desktop widths more
+    likely. Deferred; flagging explicitly per this phase's brief.
   per the task brief.
