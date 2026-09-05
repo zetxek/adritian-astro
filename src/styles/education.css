@@ -1,0 +1,44 @@
+/* Ported from assets/scss/_raditian.scss — .education */
+.education {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 131px;
+}
+
+.education::before {
+  content: '';
+  position: absolute;
+  left: 90px;
+  top: 0;
+  width: 75px;
+  height: 100%;
+  z-index: 1;
+  background-color: #edf1f4;
+  transform: skew(-13deg);
+}
+
+.education__date {
+  position: relative;
+  font-size: 14px;
+  font-weight: 300;
+  color: #333;
+  z-index: 2;
+}
+
+.education__title {
+  position: relative;
+  font-size: 24px;
+  font-weight: 600;
+  z-index: 2;
+}
+
+.education__degree {
+  position: relative;
+  font-size: 14px;
+  font-weight: 300;
+  color: #333;
+  z-index: 2;
+}

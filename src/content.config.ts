@@ -57,4 +57,52 @@ const projects = defineCollection({
     }),
 });
 
-export const collections = { experience, showcase, clients, projects };
+// id is "<locale>/<slug>". No ES entries in the Hugo exampleSite either —
+// falls back to EN via getLocalizedCollection.
+const education = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/education' }),
+  schema: z.object({
+    order: z.number(),
+    year: z.string(),
+    university: z.string(),
+    degree: z.string(),
+  }),
+});
+
+// Singleton per-locale content (like `showcase`) for the /skills data, id
+// is "<locale>/index".
+const skills = defineCollection({
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/skills' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    categories: z.array(
+      z.object({
+        name: z.string(),
+        skills: z.array(
+          z.object({
+            name: z.string(),
+            level: z.number(),
+            years: z.string(),
+            description: z.string(),
+          })
+        ),
+      })
+    ),
+  }),
+});
+
+// id is "<locale>/<slug>". No ES entries in the Hugo exampleSite either —
+// falls back to EN via getLocalizedCollection.
+const testimonial = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/testimonial' }),
+  schema: ({ image }) =>
+    z.object({
+      date: z.coerce.date(),
+      name: z.string(),
+      position: z.string(),
+      image: image(),
+    }),
+});
+
+export const collections = { experience, showcase, clients, projects, education, skills, testimonial };

@@ -33,6 +33,8 @@
 "about_button": "Check my skills"
 ## Homepage client & work
 "client_work_title": "A selection of my work"
+## Homepage education
+"education_title": "Education"
 ## Homepage extra content (text-section demo)
 "extra_content_title": "Extra (centered) content"
 "extra_content_body": "You can also use the <code>TextSection</code> component to add centered texts."

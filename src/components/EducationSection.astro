@@ -1,0 +1,38 @@
+---
+import { getLocalizedCollection } from '../i18n/mergeContent';
+import { useTranslations } from '../i18n';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const education = (await getLocalizedCollection('education', locale)).sort(
+  (a, b) => a.entry.data.order - b.entry.data.order
+);
+---
+
+<section id="education" class="section section--border-bottom rad-animation-group">
+  <div class="container-education">
+    <div class="row rad-fade-down">
+      <div class="col-12">
+        <h2>{t('education_title')}</h2>
+        <div class="row pt-2 pt-md-4">
+          {
+            education.map(({ entry, isFallback }) => (
+              <div class="col-12 col-sm-6 mb-4 mb-sm-0" data-locale={isFallback ? 'en (fallback)' : locale}>
+                <div class="education">
+                  <div class="education__date">{entry.data.year}</div>
+                  <div class="education__title">{entry.data.university}</div>
+                  <div class="education__degree">{entry.data.degree}</div>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
