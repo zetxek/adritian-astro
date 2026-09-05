@@ -5,6 +5,7 @@ jobTitle: "Chief Intern"
 company: "Internet Affairs Inc."
 location: "Stavanger, Norway"
 duration: "2023-2024"
+companyLogo: "../images/internet-affairs.png"
 ---
 
 ## 2nd job: Chief Intern

@@ -5,6 +5,7 @@ jobTitle: "CIO"
 company: "Internet Affairs Inc."
 location: "Stavanger, Norway"
 duration: "2024-now"
+companyLogo: "../images/internet-affairs.png"
 ---
 
 ## 3rd job: CIO
