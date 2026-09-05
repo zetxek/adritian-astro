@@ -12,7 +12,7 @@ interface Props {
 
 const { locale, currentPath } = Astro.props;
 const t = useTranslations(locale);
-const menu = siteConfig.headerMenu[locale] ?? siteConfig.headerMenu.en;
+const menu = siteConfig.headerMenu;
 ---
 
 <SkipToContent locale={locale} />
@@ -40,7 +40,7 @@ const menu = siteConfig.headerMenu[locale] ?? siteConfig.headerMenu.en;
           <ul class="navbar-nav ml-lg-auto">
             {menu.map((item) => (
               <li class="nav-item">
-                <a class="nav-link" href={item.url}>{item.name.toUpperCase()}</a>
+                <a class="nav-link" href={`/${locale}${item.path}`}>{t(item.labelKey).toUpperCase()}</a>
               </li>
             ))}
 

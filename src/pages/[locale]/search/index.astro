@@ -1,0 +1,21 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import SearchSection from '../../../components/SearchSection.astro';
+import '../../../styles/search.css';
+import { useTranslations, locales } from '../../../i18n';
+
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale } }));
+}
+
+const { locale } = Astro.params;
+const t = useTranslations(locale);
+---
+
+<Layout
+  locale={locale}
+  title={t('search_title')}
+  breadcrumbs={[{ name: t('search_title'), url: `/${locale}/search/` }]}
+>
+  <SearchSection locale={locale} />
+</Layout>

@@ -5,8 +5,10 @@
  */
 
 export interface NavLink {
-  name: string;
-  url: string;
+  /** i18n dictionary key for the link label (resolved per-locale at render time). */
+  labelKey: string;
+  /** Locale-relative path, e.g. '/' or '/blog/' — the locale prefix is added by the caller. */
+  path: string;
 }
 
 export interface SiteConfig {
@@ -27,8 +29,11 @@ export interface SiteConfig {
   }[];
   /** Per-locale footer notice, matches Hugo's languages.<lang>.params.footer.notice */
   footerNotice: Record<string, string>;
-  /** Per-locale header nav links, matches Hugo's languages.<lang>.menus.header */
-  headerMenu: Record<string, NavLink[]>;
+  /** Header/footer nav links, matches Hugo's languages.<lang>.menus.header.
+   * Locale-agnostic (label resolved via i18n key, path prefixed with the
+   * current locale at render time) so every locale gets correctly-prefixed
+   * URLs, not just the ones with a hand-authored menu. */
+  headerMenu: NavLink[];
   /** Section toggles — which homepage sections are enabled, and in what
    * order pages/en(or es)/index.astro renders them. Phase 1 built `experience`;
    * Phase 2 added `about`, `showcase`, `clientAndWork`, and `extraContent`
@@ -150,20 +155,12 @@ export const siteConfig: SiteConfig = {
     en: '© Adritian. Astro port by Adrián Moreno Peña.',
     es: '© Adritian. Versión en Astro por Adrián Moreno Peña.',
   },
-  headerMenu: {
-    en: [
-      { name: 'Home', url: '/en/' },
-      { name: 'Experience', url: '/en/experience/' },
-      { name: 'Blog', url: '/en/blog/' },
-      { name: 'Search', url: '/en/search/' },
-    ],
-    es: [
-      { name: 'Inicio', url: '/es/' },
-      { name: 'Experiencia', url: '/es/experience/' },
-      { name: 'Blog', url: '/es/blog/' },
-      { name: 'Buscar', url: '/es/search/' },
-    ],
-  },
+  headerMenu: [
+    { labelKey: 'home', path: '/' },
+    { labelKey: 'experience_title', path: '/experience/' },
+    { labelKey: 'blog_title', path: '/blog/' },
+    { labelKey: 'nav_search', path: '/search/' },
+  ],
   sections: {
     about: true,
     showcase: true,
@@ -188,7 +185,9 @@ export const siteConfig: SiteConfig = {
     { icon: 'youtube', label: 'YouTube', url: 'https://youtube.com' },
   ],
   about: {
-    buttonUrl: '/skills',
+    // No standalone /skills page exists in this port (skills is a homepage
+    // section, see NOTE.md Phase 3 deviations) — link to the in-page anchor.
+    buttonUrl: '#skills-section',
   },
   contact: {
     formAction: 'https://formspree.io/f/mail@example.com',
