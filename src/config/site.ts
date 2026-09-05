@@ -93,9 +93,11 @@ export interface SiteConfig {
   blog: {
     /** Hugo's [pagination].pagerSize in exampleSite/hugo.toml. */
     pagerSize: number;
+    /** Hugo's params.blog.showCategories — sidebar widget listing all tags
+     * (labeled "Categories" despite being tags, per the Hugo theme itself). */
+    showCategories: boolean;
     showRecentPosts: boolean;
     recentPostCount: number;
-    showTags: boolean;
   };
   /** Matches Hugo's `params.sharing` surface (social-sharing.html). Twitter/
    * LinkedIn/Facebook/Email default on (Hugo shows them unless explicitly
@@ -227,9 +229,9 @@ export const siteConfig: SiteConfig = {
   },
   blog: {
     pagerSize: 3,
+    showCategories: true,
     showRecentPosts: true,
     recentPostCount: 5,
-    showTags: true,
   },
   sharing: {
     twitter: true,

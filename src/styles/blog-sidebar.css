@@ -22,52 +22,94 @@
   margin-bottom: 0.75rem;
 }
 
-.blog-sidebar .posts-list-simple,
-.blog-sidebar .list-taxonomy {
+.blog-sidebar .sidebar-section ul {
   list-style: none;
   padding-inline-start: 0;
   margin: 0;
 }
 
-.blog-sidebar .posts-list-simple li.post {
+/* Categories widget: button-style pill list (mirrors Hugo's shared .tags pill styling) */
+.blog-sidebar .sidebar-section.categories ul.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.blog-sidebar .sidebar-section.categories ul.tags li a {
+  display: inline-block;
+  background-color: #f5f5f5;
+  color: var(--bs-body-color);
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.blog-sidebar .sidebar-section.categories ul.tags li a:hover {
+  background-color: #e8e8e8;
+}
+
+/* Recent posts widget */
+.blog-sidebar .sidebar-section.recent-posts li {
   border-bottom: 1px solid var(--bs-border-color);
   padding: 0.5rem 0;
 }
 
-.blog-sidebar .posts-list-simple li.post:last-child {
+.blog-sidebar .sidebar-section.recent-posts li:last-child {
   border-bottom: none;
 }
 
-.blog-sidebar .posts-list-simple .meta {
+.blog-sidebar .sidebar-section.recent-posts a {
+  color: var(--bs-body-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.blog-sidebar .sidebar-section.recent-posts a:hover {
+  color: var(--bs-primary);
+  text-decoration: underline;
+}
+
+.blog-sidebar .sidebar-section.recent-posts .post-date {
+  display: block;
   font-size: 0.8rem;
   color: var(--bs-secondary-color);
 }
 
-.blog-sidebar .list-taxonomy li {
-  display: inline-block;
-  margin: 0.15rem;
-}
-
-.blog-sidebar .list-taxonomy a {
-  display: inline-block;
-  background: var(--bs-body-bg);
-  border-radius: 999px;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.85rem;
-  text-decoration: none;
-}
-
-.blog-sidebar .tag-count {
-  color: var(--bs-secondary-color);
-  font-size: 0.75rem;
-}
-
-.blog-sidebar .view-all-tags {
-  display: inline-block;
-  margin-top: 0.75rem;
-  font-size: 0.85rem;
-}
-
+/* Dark mode: glassmorphism box, mirrors adritian.scss's dark-mode sidebar override */
 [data-bs-theme='dark'] .blog-sidebar .sidebar-section {
-  background: var(--bs-gray-800);
+  background: linear-gradient(135deg, rgba(42, 42, 42, 0.6) 0%, rgba(35, 35, 35, 0.7) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+[data-bs-theme='dark'] .blog-sidebar .sidebar-section h3 {
+  color: #fff;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 0.5rem;
+}
+
+[data-bs-theme='dark'] .blog-sidebar .sidebar-section.categories ul.tags li a {
+  background: rgba(255, 255, 255, 0.08);
+  color: #e8e8e8;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+[data-bs-theme='dark'] .blog-sidebar .sidebar-section.categories ul.tags li a:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-bs-theme='dark'] .blog-sidebar .sidebar-section.recent-posts a {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+[data-bs-theme='dark'] .blog-sidebar .sidebar-section.recent-posts a:hover {
+  color: #fff;
+}
+
+[data-bs-theme='dark'] .blog-sidebar .sidebar-section.recent-posts .post-date {
+  color: rgba(255, 255, 255, 0.5);
 }

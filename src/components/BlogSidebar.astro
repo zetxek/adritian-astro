@@ -13,18 +13,20 @@ interface Props {
 const { locale, recentPosts, tags } = Astro.props;
 const t = useTranslations(locale);
 const recent = recentPosts.slice(0, siteConfig.blog.recentPostCount);
+// Hugo's blog-sidebar.html iterates .Site.Taxonomies.tags, which Go templates
+// range over in key (alphabetical) order — not by usage count.
+const sortedTags = [...tags].sort((a, b) => a.tag.localeCompare(b.tag));
 ---
 
 <aside class="blog-sidebar col-sidebar">
   {
-    siteConfig.blog.showRecentPosts && recent.length > 0 && (
-      <div class="sidebar-section sidebar-section--recent">
-        <h3>{t('recent_posts')}</h3>
-        <ul class="posts-list-simple">
-          {recent.map(({ entry }: { entry: CollectionEntry<'blog'> }) => (
-            <li class="post">
-              <a href={`/${locale}/blog/${slugOf(entry)}/`}>{entry.data.title}</a>
-              <div class="meta">{entry.data.date.toLocaleDateString(locale)}</div>
+    siteConfig.blog.showCategories && sortedTags.length > 0 && (
+      <div class="sidebar-section categories">
+        <h3>{t('categories')}</h3>
+        <ul class="tags">
+          {sortedTags.map(({ tag }) => (
+            <li>
+              <a href={`/${locale}/blog/tags/${tag}/`}>{tag}</a>
             </li>
           ))}
         </ul>
@@ -32,21 +34,17 @@ const recent = recentPosts.slice(0, siteConfig.blog.recentPostCount);
     )
   }
   {
-    siteConfig.blog.showTags && tags.length > 0 && (
-      <div class="sidebar-section sidebar-section--tags">
-        <h3>{t('popular_tags')}</h3>
-        <ul class="list-taxonomy">
-          {tags.slice(0, 10).map(({ tag, count }) => (
+    siteConfig.blog.showRecentPosts && recent.length > 0 && (
+      <div class="sidebar-section recent-posts">
+        <h3>{t('recent_posts')}</h3>
+        <ul>
+          {recent.map(({ entry }: { entry: CollectionEntry<'blog'> }) => (
             <li>
-              <a href={`/${locale}/blog/tags/${tag}/`}>
-                {tag} <span class="tag-count">{count}</span>
-              </a>
+              <a href={`/${locale}/blog/${slugOf(entry)}/`}>{entry.data.title}</a>
+              <span class="post-date">{entry.data.date.toLocaleDateString(locale)}</span>
             </li>
           ))}
         </ul>
-        <a class="view-all-tags" href={`/${locale}/blog/tags/`}>
-          {t('view_all_tags')}
-        </a>
       </div>
     )
   }
