@@ -50,6 +50,12 @@
     activeThemeLabels.forEach((element) => {
       element.textContent = btnsToActive[0].textContent;
     });
+
+    themeSwitchers.forEach((switcher) => {
+      switcher.querySelectorAll('[data-theme-icon]').forEach((icon) => {
+        icon.classList.toggle('d-none', icon.getAttribute('data-theme-icon') !== theme);
+      });
+    });
   };
 
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
