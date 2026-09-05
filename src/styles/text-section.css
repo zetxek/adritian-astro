@@ -1,11 +1,8 @@
-.section-text {
-  padding: 3rem 0;
-}
-
-.section__title {
-  font-size: 1.75rem;
-  font-weight: 600;
-}
+/* .section__title deliberately has no font rule of its own: it's applied on
+   top of a plain h1/h2, and Hugo has no "section title" utility class of its
+   own either — its section headers are just plain headings, sized by the
+   shared h1-h6 scale in global.css. An earlier pass here gave it its own
+   28px/600 override, which doesn't match any real Hugo rule. */
 
 .section__subtitle {
   color: var(--bs-secondary-color, #6c757d);

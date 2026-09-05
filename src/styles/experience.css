@@ -1,7 +1,3 @@
-.section-experience {
-  padding: 3rem 0;
-}
-
 .section--border-bottom {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
@@ -98,8 +94,13 @@ html.no-js .experience-description {
   min-width: 0;
 }
 
+/* Ported from assets/scss/_raditian.scss — .education__date, .experience__date
+   (font-size/weight/color) + _experience.scss's nested &__date (font-size:
+   0.9rem wins over the standalone rule's 14px via higher specificity). */
 .experience__date {
   font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.57;
 }
 
 .experience__title {
@@ -116,8 +117,11 @@ html.no-js .experience-description {
   }
 }
 
+/* Ported from assets/scss/_experience.scss — the standalone rule sets 14px,
+   but the nested `&__company { font-size: 0.95rem }` (a descendant of
+   `.experience`, which every real instance is) wins via higher specificity. */
 .experience__company {
-  font-size: 14px;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--bs-link-color, #0d6efd);
 }

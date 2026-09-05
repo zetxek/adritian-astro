@@ -24,6 +24,7 @@
   position: relative;
   font-size: 14px;
   font-weight: 300;
+  line-height: 1.57;
   color: #333;
   z-index: 2;
 }

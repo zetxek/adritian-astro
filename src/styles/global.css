@@ -382,9 +382,13 @@ a:hover {
   color: var(--bs-link-color);
 }
 
+/* Phase 8 gave the active nav-link a heavier weight as a stand-in for
+   Hugo's ::after underline-wipe (not ported — needs scroll-spy JS). Phase 9's
+   font-weight parity check flagged the resulting 600 vs Hugo's uniform 700 as
+   a real mismatch: Hugo never changes nav-link weight for the active item, so
+   weight now stays 700 for every state and color alone marks "active". */
 .header .navbar .nav-link.active {
   color: var(--bs-link-color);
-  font-weight: 600;
 }
 
 .header .navbar .nav-link .nav-icon {
