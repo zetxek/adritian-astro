@@ -229,6 +229,27 @@ a:hover {
   color: var(--bs-link-color);
 }
 
+/* Ported from assets/scss/_raditian.scss — solid nav-link color (Bootstrap's
+   own navbar-light default is a translucent black/white, not a solid one) +
+   an accent-teal (not red) .active state. */
+.header .navbar .nav-link {
+  color: var(--bs-body-color);
+}
+
+.header .navbar .nav-link:hover,
+.header .navbar .nav-link:focus {
+  color: var(--bs-link-color);
+}
+
+.header .navbar .nav-link.active {
+  color: var(--bs-link-color);
+  font-weight: 600;
+}
+
+.header .navbar .nav-link .nav-icon {
+  display: inline-block;
+}
+
 .header .navbar-toggler {
   padding: 0;
   border: 0;

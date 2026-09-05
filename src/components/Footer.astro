@@ -27,7 +27,9 @@ const notice = siteConfig.footerNotice[locale] ?? siteConfig.footerNotice.en;
           <ul class="navbar-nav w-100 align-items-center justify-content-center justify-content-lg-start d-flex flex-wrap gap-2">
             {siteConfig.headerMenu.map((item) => (
               <li class="nav-item">
-                <a class="nav-link" href={`/${locale}${item.path}`}>{t(item.labelKey).toUpperCase()}</a>
+                <a class="nav-link" href={item.path.startsWith('#') ? `/${locale}/${item.path}` : `/${locale}${item.path}`}>
+                  {t(item.labelKey).toUpperCase()}
+                </a>
               </li>
             ))}
           </ul>

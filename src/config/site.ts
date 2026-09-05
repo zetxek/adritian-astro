@@ -7,8 +7,14 @@
 export interface NavLink {
   /** i18n dictionary key for the link label (resolved per-locale at render time). */
   labelKey: string;
-  /** Locale-relative path, e.g. '/' or '/blog/' — the locale prefix is added by the caller. */
+  /** Locale-relative path, e.g. '/' or '/blog/' — the locale prefix is added by the
+   * caller. An in-page anchor (e.g. '#about') is prefixed with the homepage path
+   * ('/en/#about') rather than the current path, matching Hugo's menu behavior
+   * where in-page anchors always resolve against the homepage. */
   path: string;
+  /** When set, renders as an icon-only link (icon name + visually-hidden label)
+   * instead of text, matching Hugo's menu `pre` field (e.g. email/search icons). */
+  icon?: 'email' | 'search';
 }
 
 export interface SiteConfig {
@@ -155,11 +161,20 @@ export const siteConfig: SiteConfig = {
     en: '© Adritian. Astro port by Adrián Moreno Peña.',
     es: '© Adritian. Versión en Astro por Adrián Moreno Peña.',
   },
+  /** Matches Hugo's exampleSite/hugo.toml [[languages.<lang>.menus.header]] (8
+   * items: Home, About, Skills, Portfolio, Showcase, How to, email, search).
+   * Skills/Portfolio/Showcase point at in-page anchors rather than Hugo's
+   * standalone /skills and /showcase pages — this port renders them as
+   * homepage sections only (see NOTE.md). */
   headerMenu: [
     { labelKey: 'home', path: '/' },
-    { labelKey: 'experience_title', path: '/experience/' },
-    { labelKey: 'blog_title', path: '/blog/' },
-    { labelKey: 'nav_search', path: '/search/' },
+    { labelKey: 'nav_about', path: '#about' },
+    { labelKey: 'nav_skills', path: '#skills-section' },
+    { labelKey: 'nav_portfolio', path: '#client-and-work-section' },
+    { labelKey: 'nav_showcase', path: '#showcase' },
+    { labelKey: 'nav_howto', path: '/blog/' },
+    { labelKey: 'nav_contact', path: '#contact', icon: 'email' },
+    { labelKey: 'nav_search', path: '/search/', icon: 'search' },
   ],
   sections: {
     about: true,

@@ -13,6 +13,19 @@ interface Props {
 const { locale, currentPath } = Astro.props;
 const t = useTranslations(locale);
 const menu = siteConfig.headerMenu;
+
+// Active-page detection only applies to real page paths (home/blog/search) —
+// in-page anchors (About/Skills/Portfolio/Showcase/Contact) would need
+// scroll-spy JS to detect which section is in view, which is out of scope here.
+function isActive(path: string): boolean {
+  if (path.startsWith('#')) return false;
+  const href = `/${locale}${path}`;
+  return currentPath === href || currentPath === href.replace(/\/$/, '');
+}
+
+function menuHref(path: string): string {
+  return path.startsWith('#') ? `/${locale}/${path}` : `/${locale}${path}`;
+}
 ---
 
 <SkipToContent locale={locale} />
@@ -40,7 +53,29 @@ const menu = siteConfig.headerMenu;
           <ul class="navbar-nav ml-lg-auto">
             {menu.map((item) => (
               <li class="nav-item">
-                <a class="nav-link" href={`/${locale}${item.path}`}>{t(item.labelKey).toUpperCase()}</a>
+                <a
+                  class={`nav-link${isActive(item.path) ? ' active' : ''}`}
+                  href={menuHref(item.path)}
+                  aria-current={isActive(item.path) ? 'page' : undefined}
+                >
+                  {item.icon === 'email' && (
+                    <>
+                      <svg class="nav-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                        <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
+                      </svg>
+                      <span class="visually-hidden">{t(item.labelKey)}</span>
+                    </>
+                  )}
+                  {item.icon === 'search' && (
+                    <>
+                      <svg class="nav-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                      </svg>
+                      <span class="visually-hidden">{t(item.labelKey)}</span>
+                    </>
+                  )}
+                  {!item.icon && t(item.labelKey).toUpperCase()}
+                </a>
               </li>
             ))}
 

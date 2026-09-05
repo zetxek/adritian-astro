@@ -3,6 +3,12 @@
 ## Header
 "logo_alt": "Adritian logo"
 "home": "Home"
+"nav_about": "About"
+"nav_skills": "Skills"
+"nav_portfolio": "Portfolio"
+"nav_showcase": "Showcase"
+"nav_howto": "How to"
+"nav_contact": "Contact"
 "skipToMainContent": "Skip to main content"
 "toggle_navigation": "Toggle navigation"
 "primary_navigation": "Primary navigation"

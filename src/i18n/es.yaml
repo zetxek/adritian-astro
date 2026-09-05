@@ -3,6 +3,12 @@
 ## Header
 "logo_alt": "Logotipo de Adritian"
 "home": "Inicio"
+"nav_about": "Sobre mí"
+"nav_skills": "Habilidades"
+"nav_portfolio": "Trabajo"
+"nav_showcase": "Galería"
+"nav_howto": "Blog"
+"nav_contact": "Contacto"
 "skipToMainContent": "Saltar al contenido principal"
 "toggle_navigation": "Mostrar navegación"
 "primary_navigation": "Navegación principal"
