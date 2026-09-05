@@ -1,0 +1,40 @@
+---
+import { useTranslations } from '../i18n';
+import { slugOf, type BlogEntry } from '../lib/blog';
+
+interface Props {
+  locale: string;
+  related: BlogEntry[];
+}
+
+const { locale, related } = Astro.props;
+const t = useTranslations(locale);
+---
+
+{
+  related.length > 0 && (
+    <section class="related-posts">
+      <h2>{t('related_posts')}</h2>
+      <div class="related-posts-grid">
+        {related.map(({ entry, isFallback }) => (
+          <a
+            class="related-post-card"
+            href={`/${locale}/blog/${slugOf(entry)}/`}
+            data-locale={isFallback ? 'en (fallback)' : locale}
+          >
+            <h3>{entry.data.title}</h3>
+            <p class="related-post-date">{entry.data.date.toLocaleDateString(locale)}</p>
+            <p class="related-post-desc">{entry.data.description}</p>
+            {entry.data.tags.length > 0 && (
+              <div class="tags">
+                {entry.data.tags.slice(0, 2).map((tag) => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+            )}
+          </a>
+        ))}
+      </div>
+    </section>
+  )
+}

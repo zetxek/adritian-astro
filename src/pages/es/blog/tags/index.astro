@@ -1,0 +1,28 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import { useTranslations } from '../../../../i18n';
+import { getSortedBlogPosts, getTagCounts } from '../../../../lib/blog';
+import '../../../../styles/blog-sidebar.css';
+
+const locale = 'es';
+const t = useTranslations(locale);
+const posts = await getSortedBlogPosts(locale);
+const tags = getTagCounts(posts);
+---
+
+<Layout locale={locale} title={t('blog_tags_title')} description={t('blog_description')}>
+  <section id="blog-tags" class="section">
+    <h1 class="section__title mb-4">{t('blog_tags_title')}</h1>
+    <ul class="list-taxonomy">
+      {
+        tags.map(({ tag, count }) => (
+          <li>
+            <a href={`/${locale}/blog/tags/${tag}/`}>
+              {tag} <span class="tag-count">{count}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Layout>

@@ -1,0 +1,108 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Picture } from 'astro:assets';
+import { useTranslations } from '../i18n';
+import { slugOf, readingTimeMinutes, shouldShowToc, type BlogEntry } from '../lib/blog';
+import TableOfContents from './TableOfContents.astro';
+import SocialSharing from './SocialSharing.astro';
+import RelatedPosts from './RelatedPosts.astro';
+import Comments from './Comments.astro';
+import ReadingProgress from './ReadingProgress.astro';
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  locale: string;
+  entry: CollectionEntry<'blog'>;
+  isFallback: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Content: any;
+  headings: Heading[];
+  related: BlogEntry[];
+  prevPost: BlogEntry | null;
+  nextPost: BlogEntry | null;
+  canonicalUrl: string;
+}
+
+const { locale, entry, isFallback, Content, headings, related, prevPost, nextPost, canonicalUrl } = Astro.props;
+const t = useTranslations(locale);
+const showToc = shouldShowToc(entry);
+---
+
+<ReadingProgress />
+<article id="blog-post" class="blog-post" data-locale={isFallback ? 'en (fallback)' : locale}>
+  <header class="post-header">
+    <h1 id="blog-post-title">{entry.data.title}</h1>
+    <div class="post-meta">
+      <time datetime={entry.data.date.toISOString()}>
+        {t('published_on')}{entry.data.date.toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' })}
+      </time>
+      <span class="post-meta__reading-time">&middot; {readingTimeMinutes(entry)} {t('min_read')}</span>
+    </div>
+    {
+      entry.data.tags.length > 0 && (
+        <ul class="post-tags">
+          {entry.data.tags.map((tag) => (
+            <li>
+              <a href={`/${locale}/blog/tags/${tag}/`}>{tag}</a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    {isFallback && <div class="post-fallback-badge">{t('fallback_notice')}</div>}
+  </header>
+
+  {
+    entry.data.cover && (
+      <Picture
+        src={entry.data.cover}
+        alt={entry.data.title}
+        class="post-cover"
+        width={960}
+        height={480}
+        densities={[1, 2]}
+        formats={['webp']}
+        loading="eager"
+        decoding="async"
+      />
+    )
+  }
+
+  {showToc && <TableOfContents headings={headings} sticky={entry.data.tocSticky} locale={locale} />}
+
+  <div class="post-content">
+    <Content />
+  </div>
+
+  <SocialSharing locale={locale} url={canonicalUrl} title={entry.data.title} />
+
+  <RelatedPosts locale={locale} related={related} />
+
+  {
+    (prevPost || nextPost) && (
+      <aside class="content-browser">
+        <span>
+          {prevPost && (
+            <a class="prev-post" href={`/${locale}/blog/${slugOf(prevPost.entry)}/`}>
+              &laquo; {t('prev_post')}: {prevPost.entry.data.title}
+            </a>
+          )}
+        </span>
+        <span>
+          {nextPost && (
+            <a class="next-post" href={`/${locale}/blog/${slugOf(nextPost.entry)}/`}>
+              {t('next_post')}: {nextPost.entry.data.title} &raquo;
+            </a>
+          )}
+        </span>
+      </aside>
+    )
+  }
+
+  <Comments locale={locale} />
+</article>

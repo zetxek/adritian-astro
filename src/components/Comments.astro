@@ -1,0 +1,60 @@
+---
+import { useTranslations } from '../i18n';
+import { siteConfig } from '../config/site';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const { comments } = siteConfig;
+---
+
+{
+  comments.enabled && (
+    <section class="comments-section">
+      <h2>{t('comments')}</h2>
+
+      {comments.provider === 'giscus' && comments.giscus && (
+        <script
+          is:inline
+          src="https://giscus.app/client.js"
+          data-repo={comments.giscus.repo}
+          data-repo-id={comments.giscus.repoId}
+          data-category={comments.giscus.category}
+          data-category-id={comments.giscus.categoryId}
+          data-mapping={comments.giscus.mapping ?? 'pathname'}
+          data-theme={comments.giscus.theme ?? 'preferred_color_scheme'}
+          crossorigin="anonymous"
+          async
+        />
+      )}
+
+      {comments.provider === 'utterances' && comments.utterances && (
+        <script
+          is:inline
+          src="https://utteranc.es/client.js"
+          data-repo={comments.utterances.repo}
+          data-issue-term={comments.utterances.issueTerm ?? 'pathname'}
+          data-theme={comments.utterances.theme ?? 'preferred-color-scheme'}
+          crossorigin="anonymous"
+          async
+        />
+      )}
+
+      {comments.provider === 'disqus' && comments.disqusShortname && (
+        <Fragment>
+          <div id="disqus_thread" />
+          <script is:inline define:vars={{ shortname: comments.disqusShortname }}>
+            var d = document,
+              s = d.createElement('script');
+            s.src = 'https://' + shortname + '.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', String(Date.now()));
+            (d.head || d.body).appendChild(s);
+          </script>
+        </Fragment>
+      )}
+    </section>
+  )
+}

@@ -1,0 +1,34 @@
+---
+import { useTranslations } from '../i18n';
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+  sticky?: boolean;
+  locale: string;
+}
+
+const { headings, sticky, locale } = Astro.props;
+const t = useTranslations(locale);
+const entries = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+
+{
+  entries.length > 0 && (
+    <nav class:list={['table-of-contents', { 'toc-sticky': sticky }]} aria-label={t('table_of_contents')}>
+      <p class="toc-heading">{t('table_of_contents')}</p>
+      <ul>
+        {entries.map((h) => (
+          <li class={`toc-depth-${h.depth}`}>
+            <a href={`#${h.slug}`}>{h.text}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}

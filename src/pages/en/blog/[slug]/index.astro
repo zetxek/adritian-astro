@@ -1,0 +1,46 @@
+---
+import { render } from 'astro:content';
+import Layout from '../../../../layouts/Layout.astro';
+import BlogPost from '../../../../components/BlogPost.astro';
+import { siteConfig } from '../../../../config/site';
+import { getSortedBlogPosts, slugOf, getRelatedPosts } from '../../../../lib/blog';
+import '../../../../styles/blog-post.css';
+import '../../../../styles/toc.css';
+import '../../../../styles/social-sharing.css';
+import '../../../../styles/related-posts.css';
+import '../../../../styles/comments.css';
+import '../../../../styles/reading-progress.css';
+
+const locale = 'en';
+
+export async function getStaticPaths() {
+  const posts = await getSortedBlogPosts('en');
+  return posts.map(({ entry, isFallback }) => ({
+    params: { slug: slugOf(entry) },
+    props: { entry, isFallback },
+  }));
+}
+
+const { entry, isFallback } = Astro.props;
+const { Content, headings } = await render(entry);
+const allPosts = await getSortedBlogPosts(locale);
+const related = getRelatedPosts(entry, allPosts);
+const idx = allPosts.findIndex(({ entry: e }) => slugOf(e) === slugOf(entry));
+const prevPost = idx > 0 ? allPosts[idx - 1] : null;
+const nextPost = idx >= 0 && idx < allPosts.length - 1 ? allPosts[idx + 1] : null;
+const canonicalUrl = new URL(`/${locale}/blog/${slugOf(entry)}/`, siteConfig.baseURL).toString();
+---
+
+<Layout locale={locale} title={entry.data.title} description={entry.data.description}>
+  <BlogPost
+    locale={locale}
+    entry={entry}
+    isFallback={isFallback}
+    Content={Content}
+    headings={headings}
+    related={related}
+    prevPost={prevPost}
+    nextPost={nextPost}
+    canonicalUrl={canonicalUrl}
+  />
+</Layout>

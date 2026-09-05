@@ -1,0 +1,98 @@
+---
+import { useTranslations } from '../i18n';
+import { siteConfig } from '../config/site';
+
+interface Props {
+  locale: string;
+  url: string;
+  title: string;
+}
+
+const { locale, url, title } = Astro.props;
+const t = useTranslations(locale);
+const encodedUrl = encodeURIComponent(url);
+const encodedTitle = encodeURIComponent(title);
+const { sharing } = siteConfig;
+---
+
+<div class="social-sharing">
+  <h2 class="share-heading">{t('share_this_post')}</h2>
+  <div class="share-buttons">
+    {
+      sharing.twitter && (
+        <a
+          class="share-btn share-btn--twitter"
+          href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={t('share_on_twitter')}
+        >
+          {t('share_twitter_label')}
+        </a>
+      )
+    }
+    {
+      sharing.linkedin && (
+        <a
+          class="share-btn share-btn--linkedin"
+          href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={t('share_on_linkedin')}
+        >
+          {t('share_linkedin_label')}
+        </a>
+      )
+    }
+    {
+      sharing.facebook && (
+        <a
+          class="share-btn share-btn--facebook"
+          href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={t('share_on_facebook')}
+        >
+          {t('share_facebook_label')}
+        </a>
+      )
+    }
+    {
+      sharing.bluesky && (
+        <a
+          class="share-btn share-btn--bluesky"
+          href={`https://bsky.app/intent/compose?text=${encodedTitle}%20${encodedUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={t('share_on_bluesky')}
+        >
+          {t('share_bluesky_label')}
+        </a>
+      )
+    }
+    {
+      sharing.mastodon && (
+        <a
+          class="share-btn share-btn--mastodon"
+          href={`https://mastodonshare.com/?text=${encodedTitle}&url=${encodedUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={t('share_on_mastodon')}
+        >
+          {t('share_mastodon_label')}
+        </a>
+      )
+    }
+    {
+      sharing.email && (
+        <a
+          class="share-btn share-btn--email"
+          href={`mailto:?subject=${encodedTitle}&body=${encodedUrl}`}
+          aria-label={t('share_via_email')}
+        >
+          {t('share_email_label')}
+        </a>
+      )
+    }
+  </div>
+</div>

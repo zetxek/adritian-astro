@@ -1,0 +1,35 @@
+---
+import Layout from '../../../../../layouts/Layout.astro';
+import BlogPostCard from '../../../../../components/BlogPostCard.astro';
+import BlogSidebar from '../../../../../components/BlogSidebar.astro';
+import { useTranslations } from '../../../../../i18n';
+import { getSortedBlogPosts, getTagCounts } from '../../../../../lib/blog';
+import '../../../../../styles/blog-list.css';
+import '../../../../../styles/blog-sidebar.css';
+
+const locale = 'en';
+
+export async function getStaticPaths() {
+  const posts = await getSortedBlogPosts('en');
+  const tags = getTagCounts(posts);
+  return tags.map(({ tag }) => ({ params: { tag } }));
+}
+
+const t = useTranslations(locale);
+const posts = await getSortedBlogPosts(locale);
+const tag = Astro.params.tag as string;
+const filtered = posts.filter(({ entry }) => entry.data.tags.includes(tag));
+const tags = getTagCounts(posts);
+---
+
+<Layout locale={locale} title={`${tag} — ${t('blog_title')}`} description={t('blog_description')}>
+  <section id="blog-tag" class="blog has-sidebar">
+    <div class="col-content narrow-content">
+      <h1 class="section__title mb-4">{t('tags_label')}: {tag}</h1>
+      <div class="blog-list-items">
+        {filtered.map(({ entry, isFallback }) => <BlogPostCard entry={entry} isFallback={isFallback} locale={locale} />)}
+      </div>
+    </div>
+    <BlogSidebar locale={locale} recentPosts={posts} tags={tags} />
+  </section>
+</Layout>

@@ -1,0 +1,50 @@
+.social-sharing {
+  margin: 2rem 0;
+}
+
+.social-sharing .share-heading {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+
+.social-sharing .share-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.social-sharing .share-btn {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.social-sharing .share-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.15);
+  opacity: 0.9;
+  color: #fff;
+}
+
+.share-btn--twitter {
+  background: #1da1f2;
+}
+.share-btn--linkedin {
+  background: #0077b5;
+}
+.share-btn--facebook {
+  background: #1877f2;
+}
+.share-btn--bluesky {
+  background: #0085ff;
+}
+.share-btn--mastodon {
+  background: #6364ff;
+}
+.share-btn--email {
+  background: var(--bs-gray-700);
+}

@@ -77,6 +77,46 @@ export interface SiteConfig {
     formAction: string;
     formMethod: string;
   };
+  /** Matches Hugo's `params.blog` surface (layouts/blog/list.html,
+   * blog-sidebar.html). */
+  blog: {
+    /** Hugo's [pagination].pagerSize in exampleSite/hugo.toml. */
+    pagerSize: number;
+    showRecentPosts: boolean;
+    recentPostCount: number;
+    showTags: boolean;
+  };
+  /** Matches Hugo's `params.sharing` surface (social-sharing.html). Twitter/
+   * LinkedIn/Facebook/Email default on (Hugo shows them unless explicitly
+   * set false); Bluesky/Mastodon default off (Hugo only shows them if
+   * explicitly set true). */
+  sharing: {
+    twitter: boolean;
+    linkedin: boolean;
+    facebook: boolean;
+    email: boolean;
+    bluesky: boolean;
+    mastodon: boolean;
+  };
+  /** Matches Hugo's `params.comments` surface (comments.html). */
+  comments: {
+    enabled: boolean;
+    provider: 'disqus' | 'giscus' | 'utterances';
+    disqusShortname?: string;
+    giscus?: {
+      repo: string;
+      repoId: string;
+      category: string;
+      categoryId: string;
+      mapping?: string;
+      theme?: string;
+    };
+    utterances?: {
+      repo: string;
+      issueTerm?: string;
+      theme?: string;
+    };
+  };
 }
 
 export const siteConfig: SiteConfig = {
@@ -103,10 +143,12 @@ export const siteConfig: SiteConfig = {
     en: [
       { name: 'Home', url: '/en/' },
       { name: 'Experience', url: '/en/experience/' },
+      { name: 'Blog', url: '/en/blog/' },
     ],
     es: [
       { name: 'Inicio', url: '/es/' },
       { name: 'Experiencia', url: '/es/experience/' },
+      { name: 'Blog', url: '/es/blog/' },
     ],
   },
   sections: {
@@ -155,5 +197,31 @@ export const siteConfig: SiteConfig = {
   newsletter: {
     formAction: '/',
     formMethod: 'POST',
+  },
+  blog: {
+    pagerSize: 3,
+    showRecentPosts: true,
+    recentPostCount: 5,
+    showTags: true,
+  },
+  sharing: {
+    twitter: true,
+    linkedin: true,
+    facebook: true,
+    email: true,
+    bluesky: false,
+    mastodon: false,
+  },
+  comments: {
+    enabled: true,
+    provider: 'giscus',
+    giscus: {
+      repo: 'zetxek/adritian-astro',
+      repoId: 'R_demo',
+      category: 'General',
+      categoryId: 'DIC_demo',
+      mapping: 'pathname',
+      theme: 'preferred_color_scheme',
+    },
   },
 };

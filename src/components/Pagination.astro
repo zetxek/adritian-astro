@@ -1,0 +1,39 @@
+---
+import { useTranslations } from '../i18n';
+import { pageUrl, type Page } from '../lib/blog';
+
+interface Props {
+  page: Page<unknown>;
+  locale: string;
+}
+
+const { page, locale } = Astro.props;
+const t = useTranslations(locale);
+const pages = Array.from({ length: page.lastPage }, (_, i) => i + 1);
+---
+
+{
+  page.lastPage > 1 && (
+    <nav class="pagination-nav" aria-label={t('table_of_contents')}>
+      <ul class="pagination">
+        <li class={`page-item ${!page.url.prev ? 'disabled' : ''}`}>
+          <a class="page-link" href={page.url.prev ?? '#'} aria-label={t('pagination_previous')}>
+            &laquo;
+          </a>
+        </li>
+        {pages.map((n) => (
+          <li class={`page-item ${n === page.currentPage ? 'active' : ''}`}>
+            <a class="page-link" href={pageUrl(page.baseUrl, n)} aria-current={n === page.currentPage ? 'page' : undefined}>
+              {n}
+            </a>
+          </li>
+        ))}
+        <li class={`page-item ${!page.url.next ? 'disabled' : ''}`}>
+          <a class="page-link" href={page.url.next ?? '#'} aria-label={t('pagination_next')}>
+            &raquo;
+          </a>
+        </li>
+      </ul>
+    </nav>
+  )
+}

@@ -1,0 +1,30 @@
+---
+import { useTranslations } from '../i18n';
+import { type Page, type BlogEntry } from '../lib/blog';
+import BlogPostCard from './BlogPostCard.astro';
+import Pagination from './Pagination.astro';
+import BlogSidebar from './BlogSidebar.astro';
+
+interface Props {
+  locale: string;
+  page: Page<BlogEntry>;
+  recentPosts: BlogEntry[];
+  tags: { tag: string; count: number }[];
+  heading?: string;
+}
+
+const { locale, page, recentPosts, tags, heading } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<section id="blog-list" class="blog has-sidebar">
+  <div class="col-content narrow-content">
+    <h1 class="section__title mb-4">{heading ?? t('blog_title')}</h1>
+    {page.data.length === 0 && <p>{t('no_posts_found')}</p>}
+    <div class="blog-list-items">
+      {page.data.map(({ entry, isFallback }) => <BlogPostCard entry={entry} isFallback={isFallback} locale={locale} />)}
+    </div>
+    <Pagination page={page} locale={locale} />
+  </div>
+  <BlogSidebar locale={locale} recentPosts={recentPosts} tags={tags} />
+</section>

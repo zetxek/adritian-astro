@@ -1,0 +1,59 @@
+---
+import { Picture } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { useTranslations } from '../i18n';
+import { slugOf, readingTimeMinutes } from '../lib/blog';
+
+interface Props {
+  entry: CollectionEntry<'blog'>;
+  isFallback: boolean;
+  locale: string;
+}
+
+const { entry, isFallback, locale } = Astro.props;
+const t = useTranslations(locale);
+const href = `/${locale}/blog/${slugOf(entry)}/`;
+---
+
+<article class="blog-list-item" data-locale={isFallback ? 'en (fallback)' : locale}>
+  {
+    entry.data.cover && (
+      <a href={href} class="blog-list-item__cover-link" tabindex="-1" aria-hidden="true">
+        <Picture
+          src={entry.data.cover}
+          alt=""
+          class="blog-list-item__cover"
+          width={400}
+          height={250}
+          densities={[1, 2]}
+          formats={['webp']}
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
+    )
+  }
+  <div class="blog-list-item__body">
+    <h2 class="blog-list-item__title"><a href={href}>{entry.data.title}</a></h2>
+    <div class="blog-list-item__meta">
+      <time datetime={entry.data.date.toISOString()}>
+        {t('published_on')}{entry.data.date.toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' })}
+      </time>
+      <span class="blog-list-item__reading-time">&middot; {readingTimeMinutes(entry)} {t('min_read')}</span>
+    </div>
+    <p class="blog-list-item__description">{entry.data.description}</p>
+    {
+      entry.data.tags.length > 0 && (
+        <ul class="blog-list-item__tags">
+          {entry.data.tags.map((tag) => (
+            <li>
+              <a href={`/${locale}/blog/tags/${tag}/`}>{tag}</a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    {isFallback && <div class="blog-list-item__fallback-badge">{t('fallback_notice')}</div>}
+    <a href={href} class="btn btn-outline-primary btn-read-more">{t('read_more')}</a>
+  </div>
+</article>

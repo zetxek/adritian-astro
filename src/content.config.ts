@@ -105,4 +105,21 @@ const testimonial = defineCollection({
     }),
 });
 
-export const collections = { experience, showcase, clients, projects, education, skills, testimonial };
+// id is "<locale>/<slug>", e.g. "en/getting-started". No ES posts exist in
+// the Hugo exampleSite either — falls back to EN via getLocalizedCollection.
+const blog = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      date: z.coerce.date(),
+      description: z.string(),
+      tags: z.array(z.string()).default([]),
+      cover: image().optional(),
+      draft: z.boolean().default(false),
+      toc: z.boolean().default(false),
+      tocSticky: z.boolean().default(false),
+    }),
+});
+
+export const collections = { experience, showcase, clients, projects, education, skills, testimonial, blog };

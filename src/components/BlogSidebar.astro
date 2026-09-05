@@ -1,0 +1,53 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { useTranslations } from '../i18n';
+import { siteConfig } from '../config/site';
+import { slugOf, type BlogEntry } from '../lib/blog';
+
+interface Props {
+  locale: string;
+  recentPosts: BlogEntry[];
+  tags: { tag: string; count: number }[];
+}
+
+const { locale, recentPosts, tags } = Astro.props;
+const t = useTranslations(locale);
+const recent = recentPosts.slice(0, siteConfig.blog.recentPostCount);
+---
+
+<aside class="blog-sidebar col-sidebar">
+  {
+    siteConfig.blog.showRecentPosts && recent.length > 0 && (
+      <div class="sidebar-section sidebar-section--recent">
+        <h3>{t('recent_posts')}</h3>
+        <ul class="posts-list-simple">
+          {recent.map(({ entry }: { entry: CollectionEntry<'blog'> }) => (
+            <li class="post">
+              <a href={`/${locale}/blog/${slugOf(entry)}/`}>{entry.data.title}</a>
+              <div class="meta">{entry.data.date.toLocaleDateString(locale)}</div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+  {
+    siteConfig.blog.showTags && tags.length > 0 && (
+      <div class="sidebar-section sidebar-section--tags">
+        <h3>{t('popular_tags')}</h3>
+        <ul class="list-taxonomy">
+          {tags.slice(0, 10).map(({ tag, count }) => (
+            <li>
+              <a href={`/${locale}/blog/tags/${tag}/`}>
+                {tag} <span class="tag-count">{count}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <a class="view-all-tags" href={`/${locale}/blog/tags/`}>
+          {t('view_all_tags')}
+        </a>
+      </div>
+    )
+  }
+</aside>
