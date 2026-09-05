@@ -30,9 +30,12 @@ html[data-theme-auto='true'] {
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
-[data-bs-theme='dark'] body {
-  color: #fff;
-  background-color: #181818;
+/* Explicit body color/bg per theme — do not rely solely on Bootstrap's own
+   body { color: var(--bs-body-color) } rule reading these custom properties,
+   since that couples correctness to Bootstrap's internal implementation. */
+body {
+  color: var(--bs-body-color);
+  background-color: var(--bs-body-bg);
 }
 
 /* Ported from assets/scss/_variables.scss — brand link color */
