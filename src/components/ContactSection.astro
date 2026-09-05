@@ -1,0 +1,58 @@
+---
+import { useTranslations } from '../i18n';
+import { siteConfig } from '../config/site';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const { formAction, formMethod, messageRows, info } = siteConfig.contact;
+const contactInfo = info[locale] ?? info.en;
+---
+
+<section id="contact" class="section section--contact pt-0">
+  <div class="container">
+    <div class="contact w-100">
+      <h2>{t('contact_title')}</h2>
+      <div class="row pt-2">
+        <div class="col-12 col-lg-7">
+          <form action={formAction} method={formMethod} class="contact__form">
+            <div class="row">
+              <div class="col-12 col-sm-6">
+                <input type="text" name="full_name" class="form-control" placeholder={t('contact_name_placeholder')} />
+              </div>
+              <div class="col-12 col-sm-6">
+                <input type="email" name="email" class="form-control" placeholder={t('contact_email_placeholder')} />
+              </div>
+            </div>
+            <div class="row pt-4">
+              <div class="col-12">
+                <input type="tel" name="phone" class="form-control" placeholder={t('contact_phone_placeholder')} />
+              </div>
+            </div>
+            <div class="row pt-4">
+              <div class="col-12">
+                <textarea name="message" class="form-control" rows={messageRows} placeholder={t('contact_message_placeholder')} />
+              </div>
+            </div>
+            <div class="row pt-4">
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary">{t('contact_button')}</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-12 col-lg-5 contact__info">
+          <h3>{t('contact_phone_heading')}</h3>
+          <span set:html={contactInfo.phone} />
+          <h3>{t('contact_email_heading')}</h3>
+          <span set:html={contactInfo.email} />
+          <h3>{t('contact_location_heading')}</h3>
+          <span set:html={contactInfo.location} />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

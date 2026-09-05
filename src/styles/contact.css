@@ -1,0 +1,99 @@
+/* Ported from assets/scss/_raditian.scss — .contact */
+.contact {
+  padding: 60px 30px;
+}
+
+@media (min-width: 768px) {
+  .contact {
+    padding: 100px 80px;
+  }
+}
+
+.contact__info {
+  padding-top: 50px;
+}
+
+.contact__info h3 {
+  margin-bottom: 0;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 2;
+  color: #333;
+}
+
+.contact__info span {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: normal;
+  color: #000;
+}
+
+.contact__info span + h3 {
+  margin-top: 20px;
+}
+
+@media (min-width: 992px) {
+  .contact__info {
+    padding: 0 70px;
+  }
+
+  .contact__info span + h3 {
+    margin-top: 40px;
+  }
+}
+
+.contact__form input.form-control,
+.contact__form textarea.form-control {
+  padding: 10px 0;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 2;
+  color: #333;
+  border: none;
+  border-bottom: 1px solid #dbe0e4;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+.contact__form input.form-control:focus,
+.contact__form input.form-control:active,
+.contact__form textarea.form-control:focus,
+.contact__form textarea.form-control:active {
+  border-bottom: 1px solid black;
+  box-shadow: none;
+}
+
+.section--contact {
+  padding-bottom: 60px;
+  background-color: transparent;
+}
+
+.section--contact .container {
+  background-color: #fff;
+  box-shadow: 0 42px 34px -16px rgba(0, 0, 0, 0.1);
+}
+
+[data-bs-theme='dark'] .section--contact .container {
+  background-color: #1a1a1a;
+  color: #eee;
+}
+
+[data-bs-theme='dark'] .contact__info h3 {
+  color: #ccc;
+}
+
+[data-bs-theme='dark'] .contact__info span {
+  color: #fff;
+}
+
+[data-bs-theme='dark'] .contact__form input.form-control,
+[data-bs-theme='dark'] .contact__form textarea.form-control {
+  color: #eee;
+  border-bottom-color: #444;
+}
+
+[data-bs-theme='dark'] .contact__form input.form-control:focus,
+[data-bs-theme='dark'] .contact__form textarea.form-control:focus {
+  border-bottom-color: #fff;
+}

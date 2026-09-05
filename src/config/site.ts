@@ -60,6 +60,23 @@ export interface SiteConfig {
   about: {
     buttonUrl: string;
   };
+  /** Formspree-style contact form config, matches Hugo's contact-section
+   * shortcode params (`form_action`/`form_method`) in footer.md. `info` is
+   * per-locale HTML (rendered with set:html, like showcase's description)
+   * since it mirrors Hugo's `| safeHTML`-piped phone/email/location params. */
+  contact: {
+    formAction: string;
+    formMethod: string;
+    messageRows: number;
+    info: Record<string, { phone: string; email: string; location: string }>;
+  };
+  /** Matches Hugo's newsletter-section shortcode params. The exampleSite
+   * doesn't wire a real ESP — `formAction: '/'` posts to the current page,
+   * same as the Hugo demo. */
+  newsletter: {
+    formAction: string;
+    formMethod: string;
+  };
 }
 
 export const siteConfig: SiteConfig = {
@@ -100,7 +117,7 @@ export const siteConfig: SiteConfig = {
     education: true,
     clientAndWork: true,
     testimonial: true,
-    contact: false,
+    contact: true,
     newsletter: false,
     extraContent: true,
   },
@@ -117,5 +134,26 @@ export const siteConfig: SiteConfig = {
   ],
   about: {
     buttonUrl: '/skills',
+  },
+  contact: {
+    formAction: 'https://formspree.io/f/mail@example.com',
+    formMethod: 'POST',
+    messageRows: 3,
+    info: {
+      en: {
+        phone: "<a href='tel:+555666777'>555 666 777</a>",
+        email: "<a href='mailto:demo@demosite.com'>demo@demosite.com</a>",
+        location: '🇩🇰 Denmark',
+      },
+      es: {
+        phone: "<a href='tel:+555666777'>555 666 777</a>",
+        email: "<a href='mailto:demo@demosite.com'>demo@demosite.com</a>",
+        location: '🇩🇰 Dinamarca',
+      },
+    },
+  },
+  newsletter: {
+    formAction: '/',
+    formMethod: 'POST',
   },
 };

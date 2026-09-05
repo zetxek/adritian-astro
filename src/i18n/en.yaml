@@ -39,6 +39,16 @@
 "skills_years": "years"
 ## Homepage testimonial
 "testimonials_title": "Testimonials"
+## Homepage contact
+"contact_title": "Reach out"
+"contact_name_placeholder": "Your name"
+"contact_email_placeholder": "Your e-mail"
+"contact_phone_placeholder": "Your phone"
+"contact_message_placeholder": "Your text"
+"contact_button": "Send message"
+"contact_phone_heading": "My phone"
+"contact_email_heading": "My mail"
+"contact_location_heading": "My location"
 ## Homepage extra content (text-section demo)
 "extra_content_title": "Extra (centered) content"
 "extra_content_body": "You can also use the <code>TextSection</code> component to add centered texts."
