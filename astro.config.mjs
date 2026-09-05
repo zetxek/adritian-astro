@@ -4,6 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
+  // Set this to your production URL (used for sitemap, RSS, canonical, OG)
   // Keep in sync with siteConfig.baseURL (src/config/site.ts) — needed here
   // too since @astrojs/sitemap and @astrojs/rss resolve absolute URLs from
   // this build-time value, not from the runtime config object.

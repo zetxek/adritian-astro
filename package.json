@@ -1,7 +1,10 @@
 {
   "name": "adritian-astro",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "description": "Astro port of the Adritian Hugo theme — a fast, accessible, multilingual theme for personal websites and portfolios.",
+  "license": "MIT",
+  "keywords": ["astro", "astro-theme", "portfolio", "blog", "i18n", "rtl", "bootstrap"],
   "engines": {
     "node": ">=22.12.0"
   },
