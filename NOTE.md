@@ -253,3 +253,91 @@ social sharing, comments, reading progress, and tag pages.
 - `sample.md`/`sample-3.md`/`new-icons.md` and the various
   `pagination-test-*`/`test-image-*` fixture posts were intentionally not
   ported — they're theme test fixtures, not real demo content.
+
+# Phase 6 — i18n completion: all 14 locales + RTL (status: Tasks 1-2 done)
+
+## Task 1 — scalable locale routing
+`src/pages/en/*` and `src/pages/es/*` (18 files, hand-duplicated per
+locale) replaced with `src/pages/[locale]/*` (9 files), `getStaticPaths`
+driven by `locales` from `src/i18n/index.ts`. Directory depth under
+`src/pages/` is unchanged (`en/` and `[locale]/` are both one segment), so
+every relative import (`../../layouts/Layout.astro`, etc.) needed no path
+changes — only the hardcoded `const locale = 'en'` lines became
+`Astro.params.locale`. Nested dynamic routes (`blog/[slug]`,
+`blog/page/[page]`, `blog/tags/[tag]`) now loop `for (const locale of
+locales)` inside `getStaticPaths` to produce the cross-product of
+locale × slug/page/tag params.
+
+**Validation**: `diff -rq` between the pre-refactor `dist/` and the
+post-refactor `dist/` is byte-identical (same 30 files, same content) —
+not just "same page count", the actual HTML/RSS/JSON output is unchanged.
+
+## Task 2 — all 14 locales
+- Ported Hugo's `i18n/{ar,da,de,fr,he,it,ko,nl,no,pl,pt,sv}.yaml` into
+  `src/i18n/`. `en`/`es` were already done in Phase 1-3 with additional
+  invented keys (blog/search/contact-placeholder strings that don't exist
+  in Hugo at all — see Phase 3/4 deviations) and, for `es` only,
+  hand-translated values for those invented keys.
+- **Key reconciliation**: compared this port's `en.yaml` (96 keys) against
+  Hugo's `en.yaml` (102 keys). 71 keys match by name 1:1 (Hugo's
+  `contact_form_name`-style renames from Phase 3 are the port's own
+  invention, not reconciled backward). For the 12 new locales, only these
+  71 keys are populated — one script pass per locale, pulling the Hugo
+  translation for each matching key and skipping empty/missing ones (they
+  fall back to EN automatically via `useTranslations`, no invented
+  translations).
+- **Known gaps** (documented per instructions, not fixed):
+  - `fr.yaml` in Hugo is far less complete than the other 11 — only 48/71
+    keys have a French translation (missing all homepage section titles:
+    `about_title`, `education_title`, `contact_title`,
+    `newsletter_title`, etc. and the experience/newsletter button/label
+    keys). `/fr/` correctly EN-falls-back for those; not a bug in this
+    port, a gap in the upstream Hugo theme's own translation coverage.
+  - All 12 new locales are missing 7 keys that are empty/unset even in
+    Hugo's own `en.yaml` (`meta_title`, `logo_alt`, `head_title`,
+    `head_description`, `experience_button_url`,
+    `experience_button2_url`, `about_content`) — these are per-site
+    content, not translatable UI strings, so EN fallback (or rather the
+    port's own hardcoded EN content) is the correct behavior, matching
+    Hugo's exampleSite pattern of leaving them blank in the base
+    dictionary and filling them via shortcode params instead.
+  - The 23 keys invented by this port (not present in any Hugo i18n file
+    at all — `blog_title`, `blog_description`, `experience_title`,
+    `contact_*_placeholder`, `extra_content_*`, `pagination_*`,
+    `no_posts_found`, `tags_label`, `nav_search`, `prev_post`/`next_post`,
+    `skills_years`, `fallback_notice`/`experience_fallback_notice`) are
+    English-only for all 12 new locales (same as they'd be for any locale
+    without Phase 3/4's manual Spanish additions) — no invented
+    translations were added, per this phase's explicit instruction.
+- **Locale registration**: `src/i18n/index.ts` `locales` array and
+  `astro.config.mjs`'s `i18n.locales` + `@astrojs/sitemap`'s `i18n.locales`
+  map now list all 14 codes. Content collections need no changes —
+  `getLocalizedCollection` already falls back to EN per-slug for any
+  locale with no translated entries (proven in Phase 3/4 for `es`; the 12
+  new locales exercise the exact same fallback path, now for 100% of their
+  content since none has real translated content collections yet).
+- **Language selector**: `LanguageSelector.astro`'s `labels` map now has
+  all 14 native (endonym) names. Hugo's `exampleSite/hugo.toml` only
+  registers `en`/`es`/`fr`/`ar`/`he` as active `[languages.*]` entries with
+  a `label` field; the other 9 locales have i18n dictionaries but no
+  exampleSite language block, so their labels are the standard native
+  names (Dansk, Deutsch, Italiano, 한국어, Nederlands, Norsk, Polski,
+  Português, Svenska) rather than a value copied from Hugo config.
+- **hreflang**: `Layout.astro`'s existing `alternateLinks` logic (Phase 5)
+  already mapped over the full `locales` list generically — no changes
+  needed, it now emits 14 alternates + x-default automatically.
+
+**Validation**: `npm run build` exits 0, 197 pages (14 locales × 14
+pages + `/404.html`). Grepped `about_title` from each locale's own
+`<locale>.yaml` against `dist/<locale>/index.html`: found exactly once
+for all 13 locales that have the key in Hugo, 0 times (correct EN
+fallback "Who am I?" found instead) for `fr`. `dist/en/index.html`
+hreflang: 14 `hreflang="<locale>"` + 1 `x-default`. Language selector on
+`dist/en/index.html`: 13 `.dropdown-item.choice` entries (all locales
+except current) × 2 placements (header+footer).
+
+## What remains for Task 3 (RTL) and Phase 7
+- RTL (`dir="rtl"` for `he`, `bootstrap.rtl.min.css`, logical-property CSS
+  audit) not yet done as of this checkpoint — see below/next commit.
+- No demo/polish pass, no i18n catalog/coverage page — deferred to Phase 7
+  per the task brief.

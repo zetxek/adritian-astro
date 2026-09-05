@@ -10,7 +10,26 @@ interface Props {
 const { locale, currentPath, placement } = Astro.props;
 const t = useTranslations(locale);
 
-const labels: Record<string, string> = { en: 'English', es: 'Español' };
+// Native (endonym) names — matches Hugo's `languages.<lang>.label` in
+// exampleSite/hugo.toml where a language is registered there (en, es, fr,
+// ar, he); the other 9 locales have i18n dictionaries but no exampleSite
+// language entry, so their labels are the standard native names instead.
+const labels: Record<string, string> = {
+  ar: 'العربية',
+  da: 'Dansk',
+  de: 'Deutsch',
+  en: 'English',
+  es: 'Español',
+  fr: 'Français',
+  he: 'עברית',
+  it: 'Italiano',
+  ko: '한국어',
+  nl: 'Nederlands',
+  no: 'Norsk',
+  pl: 'Polski',
+  pt: 'Português',
+  sv: 'Svenska',
+};
 const otherLocales = locales.filter((l) => l !== locale);
 const direction = placement === 'footer' ? 'dropup' : '';
 ---
