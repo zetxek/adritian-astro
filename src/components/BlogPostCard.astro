@@ -2,7 +2,7 @@
 import { Picture } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import { useTranslations } from '../i18n';
-import { slugOf, readingTimeMinutes } from '../lib/blog';
+import { slugOf, wordCount } from '../lib/blog';
 
 interface Props {
   entry: CollectionEntry<'blog'>;
@@ -15,16 +15,41 @@ const t = useTranslations(locale);
 const href = `/${locale}/blog/${slugOf(entry)}/`;
 ---
 
-<article class="blog-list-item" data-locale={isFallback ? 'en (fallback)' : locale}>
+<article class="post summary" data-locale={isFallback ? 'en (fallback)' : locale}>
+  <header>
+    <h2 class="post-title"><a href={href}>{entry.data.title}</a></h2>
+    <div class="post-meta">
+      <div class="post-meta-info">
+        <span class="published-label">{t('published_on')}</span>
+        <time class="date" datetime={entry.data.date.toISOString()}>
+          {entry.data.date.toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' })}
+        </time>
+        <span class="meta-separator" aria-hidden="true">&middot;</span>
+        <span class="wordcount">{wordCount(entry)} {t('words')}</span>
+      </div>
+      {
+        entry.data.tags.length > 0 && (
+          <ul class="tags">
+            {entry.data.tags.map((tag) => (
+              <li class="border">
+                <a href={`/${locale}/blog/tags/${tag}/`}>{tag}</a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+  </header>
+
   {
     entry.data.cover && (
-      <a href={href} class="blog-list-item__cover-link" tabindex="-1" aria-hidden="true">
+      <a href={href} class="post-summary-cover-link" tabindex="-1" aria-hidden="true">
         <Picture
           src={entry.data.cover}
           alt=""
-          class="blog-list-item__cover"
-          width={400}
-          height={250}
+          class="post-summary-cover"
+          width={800}
+          height={400}
           densities={[1, 2]}
           formats={['webp']}
           loading="lazy"
@@ -33,27 +58,20 @@ const href = `/${locale}/blog/${slugOf(entry)}/`;
       </a>
     )
   }
-  <div class="blog-list-item__body">
-    <h2 class="blog-list-item__title"><a href={href}>{entry.data.title}</a></h2>
-    <div class="blog-list-item__meta">
-      <time datetime={entry.data.date.toISOString()}>
-        {t('published_on')}{entry.data.date.toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' })}
-      </time>
-      <span class="blog-list-item__reading-time">&middot; {readingTimeMinutes(entry)} {t('min_read')}</span>
-    </div>
-    <p class="blog-list-item__description">{entry.data.description}</p>
-    {
-      entry.data.tags.length > 0 && (
-        <ul class="blog-list-item__tags">
-          {entry.data.tags.map((tag) => (
-            <li>
-              <a href={`/${locale}/blog/tags/${tag}/`}>{tag}</a>
-            </li>
-          ))}
-        </ul>
-      )
-    }
-    {isFallback && <div class="blog-list-item__fallback-badge">{t('fallback_notice')}</div>}
-    <a href={href} class="btn btn-outline-primary btn-read-more">{t('read_more')}</a>
+
+  <div class="post-summary post-content">
+    <p>{entry.data.description}</p>
   </div>
+
+  {isFallback && <div class="post-fallback-badge">{t('fallback_notice')}</div>}
+
+  <footer>
+    <div class="row">
+      <div class="col-12 col-lg-4">
+        <a class="btn btn-outline-secondary btn-sm" href={href}>
+          {t('read_more')}&nbsp;&raquo;
+        </a>
+      </div>
+    </div>
+  </footer>
 </article>
