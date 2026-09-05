@@ -10,6 +10,74 @@
   padding-top: 4px;
 }
 
+/* Ported from assets/scss/_experience.scss — .experience is now a <details>
+   with a <summary class="experience__link"> (native, no-JS-accessible
+   accordion); strip the browser's default disclosure marker and give the
+   summary the same block/padding treatment Hugo's `.experience a` had. */
+.experience {
+  list-style: none;
+}
+
+.experience__link {
+  display: block;
+  padding: 20px;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  list-style: none;
+}
+
+.experience__link::-webkit-details-marker {
+  display: none;
+}
+
+.experience__link::marker {
+  content: '';
+}
+
+.experience.selected .experience__link,
+.experience:hover .experience__link,
+.experience:active .experience__link,
+.experience__link:hover,
+.experience__link:active {
+  background-color: var(--bs-link-color);
+}
+
+.experience.selected .experience__company,
+.experience.selected .experience__date,
+.experience.selected .experience__title,
+.experience.selected .experience__location,
+.experience:hover .experience__company,
+.experience:hover .experience__date,
+.experience:hover .experience__title,
+.experience:hover .experience__location,
+.experience:active .experience__company,
+.experience:active .experience__date,
+.experience:active .experience__title,
+.experience:active .experience__location {
+  color: #fff !important;
+}
+
+/* Visible without JS (part of the native accordion flow); hidden once
+   experience-selector.js takes over and mirrors the content into the
+   right-hand `.experience-panel` instead — see html.js/.no-js below. */
+.experience__description-inline {
+  padding: 0 20px 20px;
+}
+
+.experience__description-inline h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+html.js .experience__description-inline {
+  display: none;
+}
+
+html.no-js .experience-description {
+  display: none;
+}
+
 .experience__header {
   display: flex;
   align-items: center;
@@ -62,7 +130,7 @@
   color: var(--bs-link-color, #6ea8fe);
 }
 
-.experience__description h1 {
+.experience-panel h1 {
   font-size: 1.5rem;
   font-weight: 600;
 }

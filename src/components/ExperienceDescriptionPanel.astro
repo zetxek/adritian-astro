@@ -1,0 +1,16 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'experience'>;
+  selected: boolean;
+}
+
+const { entry, selected } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<div class="experience-panel" data-experience-panel hidden={!selected}>
+  <h1>{entry.data.title}</h1>
+  <Content />
+</div>

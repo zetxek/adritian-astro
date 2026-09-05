@@ -3,6 +3,7 @@ import { getLocalizedCollection } from '../i18n/mergeContent';
 import { useTranslations } from '../i18n';
 import ExperienceJobCard from './ExperienceJobCard.astro';
 import ExperienceDescription from './ExperienceDescription.astro';
+import ExperienceDescriptionPanel from './ExperienceDescriptionPanel.astro';
 
 interface Props {
   locale: string;
@@ -16,19 +17,19 @@ const sorted = localized.sort((a, b) => b.entry.data.date.valueOf() - a.entry.da
 ---
 
 <section id="experience-list" class="section-experience section section--border-bottom">
-  <div class="row flex-column-reverse flex-md-row">
+  <div class="row flex-column-reverse flex-md-row" data-experience-widget>
     <div class="experience-list col-12 col-md-6">
       <h2 class="section__title mb-4">{t('experience_title')}</h2>
 
       {sorted.map(({ entry, isFallback }, index) => (
-        <>
-          <ExperienceJobCard entry={entry} isFallback={isFallback} locale={locale} />
-          {index !== sorted.length - 1 && <hr class="d-block d-md-none my-4" />}
-        </>
+        <ExperienceJobCard entry={entry} isFallback={isFallback} locale={locale} selected={index === 0} />
       ))}
     </div>
     <div class="experience-description col-12 col-md-6">
       <ExperienceDescription locale={locale} />
+      {sorted.map(({ entry }, index) => (
+        <ExperienceDescriptionPanel entry={entry} selected={index === 0} />
+      ))}
     </div>
   </div>
 </section>

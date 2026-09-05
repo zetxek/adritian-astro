@@ -68,7 +68,7 @@ const allJsonLd = [
 ---
 
 <!DOCTYPE html>
-<html lang={locale} dir={dir}>
+<html lang={locale} dir={dir} class="no-js">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -106,6 +106,7 @@ const allJsonLd = [
     <!-- Anti-flash of unstyled theme: set data-bs-theme before first paint, mirrors head.html's inline snippet -->
     <script is:inline>
       (function () {
+        document.documentElement.classList.replace('no-js', 'js');
         var storedTheme = localStorage.getItem('theme');
         var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (storedTheme && storedTheme !== 'auto') {
@@ -133,6 +134,7 @@ const allJsonLd = [
     <script>
       import 'bootstrap/dist/js/bootstrap.bundle.min.js';
       import '../scripts/color-modes.js';
+      import '../scripts/experience-selector.js';
     </script>
   </body>
 </html>
