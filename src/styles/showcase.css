@@ -9,22 +9,15 @@
   padding-top: 3rem;
 }
 
-.rad-showcase .display-1 {
-  width: 100%;
-  font-size: 32px;
-}
-
-@media (min-width: 968px) {
-  .rad-showcase .display-1 {
-    font-size: 48px;
-  }
-}
-
-.rad-showcase .display-5 span {
-  display: block;
-  margin-top: 5px;
-  font-weight: 300;
-}
+/* Hugo's source rule here is `.rad-showcase .container h1`/`h1 span`, which
+   targets a `.container` *descendant* of `.rad-showcase`. This widget's
+   `.container` is an ancestor of `.rad-showcase`, not a descendant of it, so
+   in Hugo's own rendered site that selector never matches anything — the
+   hero title renders at plain `.display-1` size (36px/60px) and the
+   subtitle's span stays inline. An earlier pass here ported it as
+   `.rad-showcase .display-1`/`.display-5 span` instead, which *did* match
+   our markup and silently shrank the hero text. Removed for parity with
+   what Hugo's cascade actually produces. */
 
 .rad-showcase .lead {
   width: 100%;

@@ -1,12 +1,3 @@
-.section-client-and-work {
-  padding: 3rem 0;
-}
-
-.section-client-and-work .row--padded {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
 /* Ported from assets/scss/_raditian.scss — .clients */
 .clients {
   display: flex;

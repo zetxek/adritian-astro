@@ -101,10 +101,116 @@ p {
   font-size: 16px;
   font-weight: 300;
   line-height: 1.5;
+  margin-bottom: 0.75rem;
 }
 
 b, strong {
   font-weight: 600;
+}
+
+/* Ported from assets/scss/adritian.scss — .lead */
+.lead {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: 0;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 992px) {
+  .lead {
+    font-size: 18px;
+  }
+}
+
+/* Ported from assets/scss/_raditian.scss — shared .section layout rules.
+   Elements carry both a component class (e.g. section-about) and the
+   generic "section" class; this rule supplies the base padding all of
+   them share, so per-component CSS no longer needs its own copy. */
+.section {
+  position: relative;
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+@media (min-width: 992px) {
+  .section {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+}
+
+.section--border-bottom::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  max-width: 1170px;
+  background-color: #dbe0e4;
+  transform: translateX(-50%);
+}
+
+.section .row.row--padded {
+  margin-top: 32px;
+  margin-bottom: 60px;
+}
+
+@media (min-width: 992px) {
+  .section .row.row--padded {
+    margin-top: 80px;
+    margin-bottom: 80px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .section div[class*='col-'].rad-col-text:first-child {
+    max-width: 500px;
+    margin-right: auto;
+  }
+
+  .section div[class*='col-'].rad-col-text:not(:first-child) {
+    max-width: 500px;
+    margin-left: auto;
+  }
+}
+
+.section li {
+  display: block;
+  position: relative;
+  padding-left: 15px;
+  font-weight: 300;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  text-align: left;
+}
+
+.section li::before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 4px;
+  background-color: #000;
+}
+
+.section ol,
+.section ul {
+  padding-left: 1.2rem;
+}
+
+.section ol li {
+  display: list-item;
+  padding-left: 0;
+}
+
+.section ol li::before {
+  display: none;
+  content: none;
 }
 
 /* Ported from assets/scss/_raditian.scss — .btn base + variants */
@@ -227,6 +333,15 @@ a:hover {
 
 .header .navbar-brand span:first-child {
   color: var(--bs-link-color);
+  font-size: 25px;
+  font-weight: 900;
+  letter-spacing: -1.17px;
+}
+
+@media (min-width: 768px) {
+  .header .navbar-brand span:first-child {
+    font-size: 32.9px;
+  }
 }
 
 /* Ported from assets/scss/_raditian.scss — solid nav-link color (Bootstrap's
@@ -234,6 +349,32 @@ a:hover {
    an accent-teal (not red) .active state. */
 .header .navbar .nav-link {
   color: var(--bs-body-color);
+}
+
+/* Ported from assets/scss/_raditian.scss — nav-link size/weight/padding
+   (`.header .navbar .nav-item .nav-link` in the source; shortened to
+   `.nav-link` here — same elements match, and it keeps specificity below
+   the `.active` rule below so that override still wins). */
+.header .navbar .nav-link {
+  font-size: 18px;
+  font-weight: 700;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+@media (min-width: 992px) {
+  .header .navbar .nav-link {
+    font-size: 14px;
+    padding-top: 0;
+    padding-bottom: 0;
+    white-space: nowrap;
+  }
+}
+
+@media (min-width: 1200px) {
+  .navbar-nav {
+    --bs-navbar-nav-link-padding-x: 1rem;
+  }
 }
 
 .header .navbar .nav-link:hover,
