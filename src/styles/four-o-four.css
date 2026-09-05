@@ -1,0 +1,9 @@
+/* Ported from assets/scss/_raditian.scss — .four-o-four */
+.four-o-four {
+  flex: 1;
+  padding: 125px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

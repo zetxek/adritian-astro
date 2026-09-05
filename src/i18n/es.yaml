@@ -93,6 +93,7 @@
 "pagination_previous": "Anterior"
 "pagination_next": "Siguiente"
 "no_posts_found": "No se encontraron publicaciones."
+"nav_search": "Buscar"
 ## 404 page
 "404_title": "Página no encontrada"
 "404_description": "Lo sentimos, pero la página que buscabas no pudo ser encontrada."

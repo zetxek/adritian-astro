@@ -155,11 +155,13 @@ export const siteConfig: SiteConfig = {
       { name: 'Home', url: '/en/' },
       { name: 'Experience', url: '/en/experience/' },
       { name: 'Blog', url: '/en/blog/' },
+      { name: 'Search', url: '/en/search/' },
     ],
     es: [
       { name: 'Inicio', url: '/es/' },
       { name: 'Experiencia', url: '/es/experience/' },
       { name: 'Blog', url: '/es/blog/' },
+      { name: 'Buscar', url: '/es/search/' },
     ],
   },
   sections: {

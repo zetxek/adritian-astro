@@ -1,0 +1,78 @@
+---
+/**
+ * Ports layouts/_default/search.html. The Fuse.js/jQuery/DOMPurify-based
+ * static/js/search.js is replaced by a dependency-light vanilla script
+ * (src/scripts/search.js) — see that file's header comment for why.
+ */
+import { useTranslations } from '../i18n';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const messages = {
+  minChars: t('search_min_chars'),
+  noMatches: t('search_no_matches'),
+  loading: t('search_loading'),
+  errorGeneric: t('search_error_generic'),
+  untitled: t('search_untitled'),
+  noPreview: t('search_no_preview'),
+};
+---
+
+<section id="search-section" class="search-section p-3 p-lg-5 d-flex flex-column align-items-center bg-light rounded shadow-sm">
+  <div class="my-auto w-100 search-section__inner">
+    <h2 class="mb-4 text-center">{t('search_title')}</h2>
+
+    <noscript>
+      <div class="alert alert-warning" role="alert">
+        JavaScript is required to use the search functionality, because the search takes place client-side in the
+        web browser.
+        <br />
+        Please enable JavaScript in your browser to use this functionality.
+      </div>
+    </noscript>
+
+    <div class="mb-5">
+      <form action={`/${locale}/search/`} data-index-url={`/${locale}/index.json`}>
+        <div class="input-group">
+          <input
+            id="search-query"
+            name="s"
+            class="form-control form-control-lg"
+            type="search"
+            placeholder={t('search_placeholder')}
+            autocomplete="off"
+            aria-label="Search"
+          />
+          <button type="submit" class="input-group-text" aria-label={t('nav_search')}>
+            <span aria-hidden="true">🔎</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div id="search-results" class="card border-0" data-index-url={`/${locale}/index.json`}>
+      <div class="card-body">
+        <h3 class="card-title">{t('search_results_heading')}</h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+<template id="search-result-template">
+  <div class="search-result mb-4 p-3 border-bottom">
+    <h4 class="mb-1"><a href="#" class="search-result__link text-decoration-none"></a></h4>
+    <p class="mb-2 text-muted small search-result__snippet"></p>
+    <div class="search-result__tags"></div>
+  </div>
+</template>
+
+<script type="application/json" id="search-i18n" set:html={JSON.stringify(messages)} />
+
+<script>
+  import '../scripts/search.js';
+</script>

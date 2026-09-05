@@ -1,0 +1,66 @@
+---
+/**
+ * Ports layouts/404.html. Static hosts (Vercel, Netlify, ...) serve this one
+ * file verbatim for any unmatched path while keeping the requested URL in
+ * the address bar — so a request for /es/whatever still shows /404.html's
+ * markup at the /es/whatever URL. Astro's i18n routing has no equivalent of
+ * per-locale 404 pages in static output (there's no [locale] 404 route),
+ * so instead of Hugo's separate en/404.html + es/404.html pair this is a
+ * single English-default page that progressively re-localizes itself: an
+ * inline script reads the (unchanged) URL path segment and swaps the
+ * title/description/button text + home link to Spanish when it starts with
+ * `/es/`. Without JS, everything still renders correctly in English.
+ * See NOTE.md (Phase 5) for the full rationale.
+ */
+import Layout from '../layouts/Layout.astro';
+import { useTranslations, defaultLocale } from '../i18n';
+import '../styles/four-o-four.css';
+
+const locale = defaultLocale;
+const t = useTranslations(locale);
+const tEs = useTranslations('es');
+
+const i18nByLocale = {
+  en: { title: t('404_title'), description: t('404_description'), button: t('404_button') },
+  es: { title: tEs('404_title'), description: tEs('404_description'), button: tEs('404_button') },
+};
+---
+
+<Layout locale={locale} title={t('404_title')} description={t('404_description')}>
+  <section id="main-content" tabindex="-1" class="section four-o-four text-center">
+    <h1 class="display-1">404</h1>
+    <h4 id="error-title">{i18nByLocale.en.title}</h4>
+    <p id="error-description">{i18nByLocale.en.description}</p>
+    <a id="error-button" href={`/${locale}/`} class="btn btn-primary">{i18nByLocale.en.button}</a>
+  </section>
+
+  <script type="application/json" id="404-i18n" set:html={JSON.stringify(i18nByLocale)} />
+  <script>
+    (function () {
+      const dataEl = document.getElementById('404-i18n');
+      if (!dataEl || !dataEl.textContent) return;
+
+      let i18nByLocale;
+      try {
+        i18nByLocale = JSON.parse(dataEl.textContent);
+      } catch {
+        return;
+      }
+
+      const firstSegment = window.location.pathname.split('/').filter(Boolean)[0];
+      const strings = i18nByLocale[firstSegment];
+      if (!strings) return; // unknown/default segment — English markup already rendered
+
+      const titleEl = document.getElementById('error-title');
+      const descriptionEl = document.getElementById('error-description');
+      const buttonEl = document.getElementById('error-button');
+      if (titleEl) titleEl.textContent = strings.title;
+      if (descriptionEl) descriptionEl.textContent = strings.description;
+      if (buttonEl) {
+        buttonEl.textContent = strings.button;
+        buttonEl.setAttribute('href', `/${firstSegment}/`);
+      }
+      document.documentElement.setAttribute('lang', firstSegment);
+    })();
+  </script>
+</Layout>
