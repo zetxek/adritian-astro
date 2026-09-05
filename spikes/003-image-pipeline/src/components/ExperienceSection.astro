@@ -1,0 +1,59 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Picture } from 'astro:assets';
+
+interface Props {
+  title?: string;
+}
+
+const { title = '' } = Astro.props;
+
+const entries = await getCollection('experience');
+const sorted = entries.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const rendered = await Promise.all(sorted.map((entry) => render(entry)));
+---
+
+<section id="experience-section" class="section-experience section section--border-bottom">
+  <div class="row flex-column-reverse flex-md-row">
+    <div class="experience-list col-12 mt-5 mt-sm-0">
+      {title && <h2 class="section__title mb-4">{title}</h2>}
+
+      {sorted.map((entry, index) => {
+        const { Content } = rendered[index];
+        return (
+          <>
+            <div class="experience row">
+              <div class="experience__header col-12 col-md-3 d-flex align-items-start">
+                {entry.data.companyLogo && (
+                  <Picture
+                    src={entry.data.companyLogo}
+                    alt={`${entry.data.company} logo`}
+                    class="experience__company-logo"
+                    width={48}
+                    height={48}
+                    densities={[1, 2]}
+                    formats={['webp']}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                )}
+                <div class="experience__meta">
+                  <div class="experience__date">{entry.data.duration}</div>
+                  <div class="experience__title">{entry.data.jobTitle}</div>
+                  <div class="experience__company">
+                    {entry.data.company}. <span class="experience__location">{entry.data.location}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="experience__description d-print-block col-12 col-md-9 mt-3 mt-md-0">
+                <h1>{entry.data.title}</h1>
+                <Content />
+              </div>
+            </div>
+            {index !== sorted.length - 1 && <hr class="d-block d-md-none my-4" />}
+          </>
+        );
+      })}
+    </div>
+  </div>
+</section>

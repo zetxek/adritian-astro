@@ -1,0 +1,79 @@
+.section-experience {
+  padding: 3rem 0;
+}
+
+.experience__fallback-badge {
+  display: inline-block;
+  margin-top: 0.25rem;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.75rem;
+  color: #7a5b00;
+  background: #fff3cd;
+  border: 1px solid #ffe69c;
+  border-radius: 0.25rem;
+}
+
+.section--border-bottom {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.experience + .experience {
+  padding-top: 4px;
+}
+
+.experience__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.experience__company-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.experience__meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.experience__date {
+  font-size: 0.9rem;
+}
+
+.experience__title {
+  position: relative;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0.2rem 0;
+  z-index: 2;
+}
+
+@media (min-width: 992px) {
+  .experience__title {
+    font-size: 24px;
+  }
+}
+
+.experience__company {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--bs-link-color, #0d6efd);
+}
+
+.experience__location {
+  font-weight: normal;
+}
+
+[data-bs-theme='dark'] .experience__company {
+  color: var(--bs-link-color, #6ea8fe);
+}
+
+.experience__description h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
