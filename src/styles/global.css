@@ -13,6 +13,17 @@
 
 html {
   transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  /* Fallback for no-JS/pre-hydration; sticky-header.js keeps this in sync
+     with the header's real (transitioning) height so anchor jumps never
+     land under the fixed header. */
+  --header-height: 110px;
+  scroll-padding-top: var(--header-height);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body, p, h1, h2, h3, h4, h5, h6, a {
@@ -322,6 +333,33 @@ a:hover {
   background-color: transparent;
 }
 
+/* Ported from assets/scss/_raditian.scss — sticky-header.js always adds
+   header--sticky on load; header--sticky-triggered is added once the page
+   scrolls past 15px, shrinking the header and giving it a solid background. */
+.header--sticky {
+  padding-top: 20px;
+  transition-property: height, padding, background-color, box-shadow;
+  transition-duration: 0.35s;
+  transition-timing-function: ease;
+}
+
+@media (min-width: 992px) {
+  .header--sticky {
+    padding-top: 35px;
+  }
+}
+
+.header--sticky-triggered {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  background-color: #fff;
+  box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.1);
+}
+
+[data-bs-theme='dark'] .header--sticky-triggered {
+  background-color: #181818;
+}
+
 .header .navbar-brand {
   color: var(--bs-body-color);
   transition: transform 0.2s ease-in-out;
@@ -413,6 +451,13 @@ a:hover {
 
 .header .dropdown-menu-end {
   --bs-dropdown-min-width: 8rem;
+}
+
+/* Ported from assets/scss/_navbar.scss — hidden by default to prevent a
+   flash of the "More" item before navbar-overflow.js runs and decides
+   whether anything actually overflows. */
+.header .navbar .more-dropdown {
+  display: none;
 }
 
 /* Ported from assets/scss/_menu.scss — prevents dropdown clipping (theme issue #206) */
