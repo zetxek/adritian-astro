@@ -23,6 +23,23 @@
   width: 100%;
 }
 
+/* Ported from assets/scss/_raditian.scss — the hero-overlap rule. Adjacent-
+   sibling combinator, not an ID: whichever <section> immediately follows the
+   showcase gets pulled up under it at wide viewports. Hugo's own homepage
+   puts About right after Showcase, so that's what overlaps there; this port
+   orders About before Showcase instead (see NOTE.md), so here the sibling is
+   Experience — same selector, same rule, following whatever the actual
+   homepage order is. */
+.rad-showcase + section {
+  margin-top: 0;
+}
+
+@media (min-width: 1200px) {
+  .rad-showcase + section {
+    margin-top: -70px;
+  }
+}
+
 .profile-image img {
   max-inline-size: 100%;
   block-size: auto;

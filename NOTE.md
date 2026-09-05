@@ -390,3 +390,101 @@ homepage-only sections, per Phase 3's NOTE.md decision):
     items instead of 4, which makes overflow at narrow desktop widths more
     likely. Deferred; flagging explicitly per this phase's brief.
   per the task brief.
+
+# Phase 9 — font + spacing parity (status: complete)
+
+Deployed-review + computed-style probing against `https://adritian-demo.
+vercel.app/` found the base typography scale and section spacing rules from
+`_raditian.scss`/`adritian.scss` were still missing or wrong in several
+places, despite Phase 8's pass. Fixed against the Hugo theme repo
+(`/Users/zetxek/git/adritian-free-hugo-theme/assets/scss/`) as source of
+truth, validated with a Playwright probe comparing computed styles element-
+by-element against the live Hugo demo (`/tmp/p9c-probe.txt`).
+
+**Bugs found and fixed**:
+- `showcase.css` had `.rad-showcase .display-1 { font-size: 32px/48px }` and
+  `.rad-showcase .display-5 span { display: block; font-weight: 300 }`. Both
+  were a mistranslation of Hugo's own `.rad-showcase .container h1`/`h1
+  span` rules — in Hugo's *actual* markup `.container` is an *ancestor* of
+  `.rad-showcase`, not a descendant, so that selector never matches anything
+  and the hero title renders at plain `.display-1` size (60px desktop). The
+  Astro port's version used a selector that *did* match, silently shrinking
+  the hero h1 to 48px. Removed; hero h1 now measures 60px/800 like Hugo.
+- No base `.section { padding: 60px 0 → 80px 0 at ≥992px }` rule existed at
+  all — `about.css`/`client-and-work.css`/`experience.css`/`text-section.css`
+  each had their own ad-hoc `padding: 3rem 0` (48px) instead. Added the
+  shared rule to `global.css` (plus `.section--border-bottom::after`'s
+  divider, `.section .row.row--padded` margins, and `rad-col-text`
+  max-width, all from the same `_raditian.scss` block) and deleted the
+  now-redundant per-component overrides.
+- `.section__title` (an Astro-only convenience class, not from Hugo — Hugo's
+  section headers are just plain `h1`/`h2`) had its own `28px/600`  rule,
+  overriding the correctly-ported shared heading scale. Removed; these
+  headings (About, Client & Work, Experience list, blog listing) now render
+  at the same size the plain h1/h2 rule already gives them.
+- Skills category headings (`<h3 class="mb-4">`) used Bootstrap's `mb-4`
+  utility (24px, `!important`) instead of the ported heading scale's 10px.
+  Hugo has no equivalent Skills-on-homepage section to compare against (the
+  exampleSite homepage doesn't render one), so there's no Hugo value being
+  overridden here — just an internal inconsistency. Dropped `mb-4`.
+- `.header .navbar .nav-link` had no font-size/weight/padding of its own,
+  falling back to Bootstrap's raw `.nav-link` defaults (16px/8px padding)
+  instead of `_raditian.scss`'s `.header .navbar .nav-item .nav-link` rule
+  (18px/700 mobile → 14px desktop, plus `--bs-navbar-nav-link-padding-x:
+  1rem` at ≥1200px). Ported, using the shorter `.header .navbar .nav-link`
+  selector (same elements match) to stay under `.nav-link.active`'s
+  specificity.
+- `.header .navbar .nav-link.active` additionally set `font-weight: 600`, a
+  Phase 8 stand-in for Hugo's un-ported `::after` underline-wipe active
+  indicator. Hugo never changes nav-link weight for the active item (always
+  700) — dropped the weight override, kept the color-only distinction.
+- `.experience__company`/`.experience__date` used the *standalone*
+  `_experience.scss` rule's values (14px / no weight) instead of the same
+  file's nested `.experience { &__company / &__date { ... } } ` overrides,
+  which win in Hugo via higher specificity since every real instance is a
+  descendant of `.experience`: company is 0.95rem (15.2px) not 14px; date
+  additionally needed `font-weight: 300` and `_raditian.scss`'s
+  `line-height: 1.57` (neither was ported at all). Same `line-height: 1.57`
+  added to `.education__date` for consistency (same source rule).
+- `p` had no `margin-bottom` (`adritian.scss` sets `0.75rem`/12px), falling
+  back to Bootstrap's default 1rem/16px. Added. Also ported the base `.lead`
+  rule (16px/300/1.5, 18px at ≥992px) — used by 4 components but never
+  actually styled.
+- Ported `_raditian.scss`'s hero-overlap rule, `.rad-showcase + section {
+  margin-top: -70px }` at ≥1200px, as a sibling-combinator rule (not
+  hardcoded to an ID) so it follows whatever section actually comes right
+  after the showcase widget in the DOM.
+
+**Known, intentional non-matches** (structural, not typography — out of
+this phase's scope):
+- Homepage section order is `about → showcase → ...` here vs Hugo's
+  `showcase → about → ...` (Phase 3 decision, see "Final homepage section
+  order" above). This means:
+  - The literal "first `<h2>` on the page" differs by *element*, not by
+    CSS rule: Hugo's is the showcase subtitle (`h2.display-5`, Bootstrap's
+    own 48px/300/1.2 line-height, unmodified and already correct here too —
+    verified by probe), Astro's is the About title (`h2.section__title`,
+    plain-h2 rule, 36px/700). Comparing "first h2" across both sites is
+    comparing two different elements by coincidence of DOM order, not a
+    parity bug. The *semantically*-matched pair — `#about h2` on both sites
+    — computes identically (36px/700/normal/10px, verified by probe).
+  - The `.rad-showcase + section { margin-top: -70px }` rule therefore
+    lands on `#experience-section` here (the section actually adjacent to
+    `#showcase`) instead of `#about` (Hugo's adjacent section). Verified by
+    screenshot at 1440px that this does not cause any visible overlap/
+    clipping — the showcase widget's image column is taller than its text
+    column, so the negative margin only closes empty whitespace above the
+    Experience heading. `#about` itself — first in the DOM here, with
+    nothing above it to overlap — correctly gets `margin-top: 0`, not
+    `-70px`; forcing Hugo's value onto it would pull it up under the fixed
+    header instead, which would be a real regression, not a fix.
+
+**Validation**: `npm run build` exits 0 (211 pages). Playwright probe
+(`/tmp/p9c-probe.txt`) comparing computed styles against
+`adritian-demo.vercel.app`: h1.display-1, h2.display-5, `#about h2`, h3
+(first, unclassed), nav-link, `.experience__company`, `.experience__date`
+all match exactly; section-after-showcase `margin-top: -70px` confirmed at
+1440px in both. Regression check: light mode `rgb(0,0,0)` on
+`rgb(255,255,255)`, dark mode `rgb(255,255,255)` on `rgb(24,24,24)` via the
+real theme toggle (not a raw attribute set), experience accordion selection
+still works, 211-page build covers all 14 locales.
