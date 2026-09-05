@@ -1,0 +1,59 @@
+---
+import { getLocalizedCollection } from '../i18n/mergeContent';
+import { useTranslations } from '../i18n';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const [{ entry, isFallback }] = await getLocalizedCollection('skills', locale);
+const { title, description, categories } = entry.data;
+---
+
+<section id="skills-section" class="section section--border-bottom site-skills-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h2 class="site-skills-title">{title}</h2>
+        <div class="site-skills-description">
+          <p>{description}</p>
+        </div>
+        {isFallback && <div class="skills__fallback-badge">{t('fallback_notice')}</div>}
+      </div>
+    </div>
+
+    {
+      categories.map((category) => (
+        <div class="row mt-5">
+          <div class="col-12">
+            <h3 class="mb-4">{category.name}</h3>
+            <div class="row">
+              {category.skills.map((skill) => (
+                <div class="col-md-6">
+                  <div class="skill-item">
+                    <div class="skill-header">
+                      <h4 class="skill-name">{skill.name}</h4>
+                      <span class="skill-level">{skill.level}%</span>
+                    </div>
+                    <div class="skill-bar">
+                      <div class="skill-bar-fill" style={`width: ${skill.level}%;`} />
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span class="skill-years">
+                        {skill.years} {t('skills_years')}
+                      </span>
+                      <span class="skill-description">{skill.description}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>

@@ -31,13 +31,14 @@ export interface SiteConfig {
   headerMenu: Record<string, NavLink[]>;
   /** Section toggles — which homepage sections are enabled, and in what
    * order pages/en(or es)/index.astro renders them. Phase 1 built `experience`;
-   * Phase 2 adds `about`, `showcase`, `clientAndWork`, and `extraContent`
-   * (a plain text-section demo block). `education`/`testimonial`/`contact`/
-   * `newsletter` remain placeholders for later phases. */
+   * Phase 2 added `about`, `showcase`, `clientAndWork`, and `extraContent`
+   * (a plain text-section demo block); Phase 3 adds `skills`, `education`,
+   * `testimonial`, `contact`, `newsletter`. */
   sections: {
     about: boolean;
     showcase: boolean;
     experience: boolean;
+    skills: boolean;
     education: boolean;
     clientAndWork: boolean;
     testimonial: boolean;
@@ -95,7 +96,8 @@ export const siteConfig: SiteConfig = {
     about: true,
     showcase: true,
     experience: true,
-    education: false,
+    skills: true,
+    education: true,
     clientAndWork: true,
     testimonial: false,
     contact: false,
