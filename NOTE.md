@@ -10,6 +10,10 @@ homepage is now feature-complete relative to the Hugo exampleSite.
 `about → showcase → experience-section → skills-section → education →
 client-and-work-section → testimonial → contact → newsletter → extra-content`
 
+**Superseded in Phase 9**: reordered to `showcase → about → ...` (rest
+unchanged) to match Hugo's actual `exampleSite/content/home/home.md`
+shortcode order. See the Phase 9 section at the bottom of this file.
+
 All toggleable via `siteConfig.sections` (`src/config/site.ts`).
 
 ## Validation done
@@ -488,3 +492,71 @@ all match exactly; section-after-showcase `margin-top: -70px` confirmed at
 `rgb(255,255,255)`, dark mode `rgb(255,255,255)` on `rgb(24,24,24)` via the
 real theme toggle (not a raw attribute set), experience accordion selection
 still works, 211-page build covers all 14 locales.
+
+## Phase 9 follow-up — homepage section order fixed to match Hugo
+
+The prior commit's "known, intentional non-match" (About before Showcase)
+turned out to be the actual root cause of both remaining diffs, not an
+unrelated structural quirk to route around. Checked the authoritative
+source — Hugo's `exampleSite/content/home/home.md` — which lays out
+shortcodes in this order: `showcase-section, about-section,
+education-list, experience-section, experience-list, client-and-work-
+section, testimonial-section, spacer, text-section` (contact/newsletter
+are appended by the Hugo layout template itself, not by home.md).
+
+Swapped `<ShowcaseSection />`/`<AboutSection />` in
+`src/pages/[locale]/index.astro` so Showcase renders first, About second —
+matching Hugo for the two sections that actually matter to the -70px
+overlap and h2 questions. Left the rest of the order (experience → skills
+→ education → client-and-work → testimonial → contact → newsletter →
+extra-content) as-is: skills-section has no Hugo homepage equivalent to
+order against (see Phase 9's first entry above), and reordering
+education/experience beyond what was asked risked touching things nobody
+flagged as broken.
+
+Effects of the swap:
+- `.rad-showcase + section { margin-top: -70px }` (ported in the previous
+  commit as a sibling-combinator rule, deliberately not hardcoded to an
+  ID) now lands on `#about` automatically — no CSS change needed, it just
+  follows the DOM. Verified both sides compute `margin-top: -70px` /
+  `padding-top: 80px` on `#showcase + section` at 1440px.
+- The literal "first h2 on the page" is now `h2.display-5` (the showcase
+  subtitle) on both sites, so the comparison that previously looked like a
+  parity bug now matches directly with no caveat needed: 48px/300/57.6px
+  both sides.
+- Checked for a fixed-header/overlap regression from Showcase now being
+  first (the same risk previously ruled out `-70px` on About when About
+  was first): screenshotted at 1440px, no clipping — `.header`'s
+  `fixed-top` positioning doesn't overlap page content in this build
+  either way.
+
+**Not implemented — h1 span/48px structure (asked for, but contradicted by
+live measurement)**: the brief asked to replicate `_raditian.scss`'s
+`.rad-showcase .container h1 { font-size: 32px/48px }` +
+`.container h1 span { font-weight: 300 }` in the showcase title. Re-checked
+directly against the live Hugo demo before implementing (`adritian-
+demo.vercel.app`, fresh fetch): the rendered hero is `<h1
+class="display-1">Showcase section</h1>` with **no span**, computing
+**60px/800** — not 48px. Walked its ancestor chain up to `.rad-showcase`:
+`h1 → div.col-* → div.showcase-section.row... → div (no class)` — no
+`.container` anywhere in it. Confirmed what the first Phase 9 commit's
+`showcase.css` comment already documented: in Hugo's own `.container` is
+an *ancestor* of `.rad-showcase`, not a descendant, so `.rad-showcase
+.container h1` cannot match this markup and never applies on the real
+site. Implementing it here would reproduce a Hugo-source-level dead rule,
+regressing the h1 size this phase already fixed (and already verified
+against the live site in the previous two commits) from 60px back to
+48px. Left `ShowcaseSection.astro`'s markup as plain `<h1
+class="display-1">{title}</h1>` with no span.
+
+**Validation**: `npm run build` exits 0 (211 pages). `dist/en/index.html`
+section id order: `showcase, about, experience-section, skills-section,
+education, client-and-work-section, testimonial, contact, newsletter,
+extra-content` — showcase before about, confirmed. Playwright probe
+(`/tmp/p9d-probe.txt`) vs `adritian-demo.vercel.app`: h1.display-1,
+h2.display-5, `#about h2`, `#showcase + section` margin-top/padding-top,
+nav-link, `.experience__company`, `.experience__date` all match exactly.
+Regression check: light/dark body colors via the real theme toggle,
+experience accordion selection, 14 locale directories present in `dist/`,
+`/he/` (RTL) homepage has the same reordered section sequence and
+`dir="rtl"` intact.

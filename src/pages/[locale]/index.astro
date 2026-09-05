@@ -34,8 +34,8 @@ const t = useTranslations(locale);
 ---
 
 <Layout locale={locale} title={t('head_title')} description={t('head_description')}>
-  {siteConfig.sections.about && <AboutSection locale={locale} />}
   {siteConfig.sections.showcase && <ShowcaseSection locale={locale} />}
+  {siteConfig.sections.about && <AboutSection locale={locale} />}
   {siteConfig.sections.experience && <ExperienceSection locale={locale} />}
   {siteConfig.sections.skills && <SkillsSection locale={locale} />}
   {siteConfig.sections.education && <EducationSection locale={locale} />}
