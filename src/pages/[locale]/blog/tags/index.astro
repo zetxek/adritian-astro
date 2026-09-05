@@ -1,10 +1,14 @@
 ---
 import Layout from '../../../../layouts/Layout.astro';
-import { useTranslations } from '../../../../i18n';
+import { useTranslations, locales } from '../../../../i18n';
 import { getSortedBlogPosts, getTagCounts } from '../../../../lib/blog';
 import '../../../../styles/blog-sidebar.css';
 
-const locale = 'es';
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale } }));
+}
+
+const { locale } = Astro.params;
 const t = useTranslations(locale);
 const posts = await getSortedBlogPosts(locale);
 const tags = getTagCounts(posts);

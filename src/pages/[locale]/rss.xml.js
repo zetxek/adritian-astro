@@ -1,10 +1,14 @@
 import rss from '@astrojs/rss';
 import { siteConfig } from '../../config/site';
 import { getSortedBlogPosts, slugOf } from '../../lib/blog';
+import { locales } from '../../i18n';
 
-const locale = 'en';
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale } }));
+}
 
 export async function GET(context) {
+  const { locale } = context.params;
   const posts = await getSortedBlogPosts(locale);
   return rss({
     title: `${siteConfig.title} Blog`,

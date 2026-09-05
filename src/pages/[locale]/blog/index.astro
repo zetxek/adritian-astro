@@ -1,14 +1,18 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import BlogListPage from '../../../components/BlogListPage.astro';
-import { useTranslations } from '../../../i18n';
+import { useTranslations, locales } from '../../../i18n';
 import { siteConfig } from '../../../config/site';
 import { getSortedBlogPosts, getTagCounts, paginate } from '../../../lib/blog';
 import '../../../styles/blog-list.css';
 import '../../../styles/blog-sidebar.css';
 import '../../../styles/pagination.css';
 
-const locale = 'en';
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale } }));
+}
+
+const { locale } = Astro.params;
 const t = useTranslations(locale);
 const posts = await getSortedBlogPosts(locale);
 const page = paginate(posts, { pageSize: siteConfig.blog.pagerSize, currentPage: 1, baseUrl: `/${locale}/blog/` });

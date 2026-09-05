@@ -1,13 +1,17 @@
 import { getSortedBlogPosts, slugOf } from '../../lib/blog';
-
-const locale = 'es';
+import { locales } from '../../i18n';
 
 /**
  * Build-time search index — ports layouts/_default/index.json. Scoped to
  * blog posts (the only collection with body text and a standalone,
  * linkable per-entry page); see NOTE.md (Phase 5) for the full rationale.
  */
-export async function GET() {
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale } }));
+}
+
+export async function GET({ params }) {
+  const { locale } = params;
   const posts = await getSortedBlogPosts(locale);
   const index = posts.map(({ entry }) => ({
     title: entry.data.title,

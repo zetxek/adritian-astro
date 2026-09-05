@@ -22,10 +22,14 @@ import '../../styles/testimonial.css';
 import '../../styles/contact.css';
 import '../../styles/newsletter.css';
 import '../../styles/text-section.css';
-import { useTranslations } from '../../i18n';
+import { useTranslations, locales } from '../../i18n';
 import { siteConfig } from '../../config/site';
 
-const locale = 'en';
+export function getStaticPaths() {
+  return locales.map((locale) => ({ params: { locale } }));
+}
+
+const { locale } = Astro.params;
 const t = useTranslations(locale);
 ---
 

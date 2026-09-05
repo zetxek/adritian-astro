@@ -3,7 +3,7 @@ import { render } from 'astro:content';
 import Layout from '../../../../layouts/Layout.astro';
 import BlogPost from '../../../../components/BlogPost.astro';
 import { siteConfig } from '../../../../config/site';
-import { useTranslations } from '../../../../i18n';
+import { useTranslations, locales } from '../../../../i18n';
 import { getSortedBlogPosts, slugOf, getRelatedPosts } from '../../../../lib/blog';
 import { buildBlogPostingJsonLd, absoluteUrl } from '../../../../lib/seo';
 import '../../../../styles/blog-post.css';
@@ -13,17 +13,19 @@ import '../../../../styles/related-posts.css';
 import '../../../../styles/comments.css';
 import '../../../../styles/reading-progress.css';
 
-const locale = 'en';
-const t = useTranslations(locale);
-
 export async function getStaticPaths() {
-  const posts = await getSortedBlogPosts('en');
-  return posts.map(({ entry, isFallback }) => ({
-    params: { slug: slugOf(entry) },
-    props: { entry, isFallback },
-  }));
+  const paths = [];
+  for (const locale of locales) {
+    const posts = await getSortedBlogPosts(locale);
+    for (const { entry, isFallback } of posts) {
+      paths.push({ params: { locale, slug: slugOf(entry) }, props: { entry, isFallback } });
+    }
+  }
+  return paths;
 }
 
+const { locale } = Astro.params;
+const t = useTranslations(locale);
 const { entry, isFallback } = Astro.props;
 const { Content, headings } = await render(entry);
 const allPosts = await getSortedBlogPosts(locale);

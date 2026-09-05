@@ -2,22 +2,26 @@
 import Layout from '../../../../../layouts/Layout.astro';
 import BlogPostCard from '../../../../../components/BlogPostCard.astro';
 import BlogSidebar from '../../../../../components/BlogSidebar.astro';
-import { useTranslations } from '../../../../../i18n';
+import { useTranslations, locales } from '../../../../../i18n';
 import { getSortedBlogPosts, getTagCounts } from '../../../../../lib/blog';
 import '../../../../../styles/blog-list.css';
 import '../../../../../styles/blog-sidebar.css';
 
-const locale = 'en';
-
 export async function getStaticPaths() {
-  const posts = await getSortedBlogPosts('en');
-  const tags = getTagCounts(posts);
-  return tags.map(({ tag }) => ({ params: { tag } }));
+  const paths = [];
+  for (const locale of locales) {
+    const posts = await getSortedBlogPosts(locale);
+    const tags = getTagCounts(posts);
+    for (const { tag } of tags) {
+      paths.push({ params: { locale, tag } });
+    }
+  }
+  return paths;
 }
 
+const { locale, tag } = Astro.params;
 const t = useTranslations(locale);
 const posts = await getSortedBlogPosts(locale);
-const tag = Astro.params.tag as string;
 const filtered = posts.filter(({ entry }) => entry.data.tags.includes(tag));
 const tags = getTagCounts(posts);
 ---
