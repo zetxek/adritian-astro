@@ -10,15 +10,22 @@ interface Props {
 const { page, locale } = Astro.props;
 const t = useTranslations(locale);
 const pages = Array.from({ length: page.lastPage }, (_, i) => i + 1);
+const isFirst = page.currentPage === 1;
+const isLast = page.currentPage === page.lastPage;
 ---
 
 {
   page.lastPage > 1 && (
-    <nav class="pagination-nav" aria-label={t('table_of_contents')}>
+    <nav class="pagination-nav" aria-label={t('pagination')}>
       <ul class="pagination">
+        <li class={`page-item ${isFirst ? 'disabled' : ''}`}>
+          <a class="page-link" href={isFirst ? '#' : pageUrl(page.baseUrl, 1)} aria-label={t('pagination_first')}>
+            &laquo;
+          </a>
+        </li>
         <li class={`page-item ${!page.url.prev ? 'disabled' : ''}`}>
           <a class="page-link" href={page.url.prev ?? '#'} aria-label={t('pagination_previous')}>
-            &laquo;
+            &lsaquo;
           </a>
         </li>
         {pages.map((n) => (
@@ -30,6 +37,11 @@ const pages = Array.from({ length: page.lastPage }, (_, i) => i + 1);
         ))}
         <li class={`page-item ${!page.url.next ? 'disabled' : ''}`}>
           <a class="page-link" href={page.url.next ?? '#'} aria-label={t('pagination_next')}>
+            &rsaquo;
+          </a>
+        </li>
+        <li class={`page-item ${isLast ? 'disabled' : ''}`}>
+          <a class="page-link" href={isLast ? '#' : pageUrl(page.baseUrl, page.lastPage)} aria-label={t('pagination_last')}>
             &raquo;
           </a>
         </li>
