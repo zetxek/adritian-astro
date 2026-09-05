@@ -118,7 +118,7 @@ export const siteConfig: SiteConfig = {
     clientAndWork: true,
     testimonial: true,
     contact: true,
-    newsletter: false,
+    newsletter: true,
     extraContent: true,
   },
   experience: {

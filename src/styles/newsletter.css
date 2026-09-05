@@ -1,0 +1,85 @@
+/* Ported from assets/scss/_raditian.scss — .section--cta / .rad-subscription-group */
+.section--cta {
+  padding-top: 80px;
+  padding-bottom: 80px;
+  background-color: #000;
+  color: #fff;
+}
+
+.section--cta h2 {
+  color: #fff;
+}
+
+.rad-subscription-group {
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px;
+  max-width: 462px;
+  height: 56px;
+  border: 1px solid #fff;
+  border-radius: 56px;
+}
+
+.rad-subscription-group form {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rad-subscription-group #rad-subscription-fail,
+.rad-subscription-group #rad-subscription-success {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rad-subscription-group #rad-subscription-fail p,
+.rad-subscription-group #rad-subscription-success p {
+  color: #fff;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.rad-subscription-group input[type='email'] {
+  padding: 0 12px;
+  background-color: transparent;
+  border: none;
+  border-radius: 56px;
+  color: #fff;
+}
+
+.rad-subscription-group input[type='email']:focus,
+.rad-subscription-group input[type='email']:active {
+  outline: none;
+  box-shadow: none;
+}
+
+.rad-subscription-group:focus-within {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4);
+}
+
+@media (forced-colors: active) {
+  .rad-subscription-group input[type='email']:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}
+
+.rad-subscription-group input[type='email']::placeholder {
+  color: #fff;
+}
+
+.rad-subscription-group button {
+  white-space: nowrap;
+}
+
+#rad-subscription-submit.is-loading {
+  opacity: 0.6;
+  pointer-events: none;
+}

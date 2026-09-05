@@ -3,14 +3,24 @@ import Layout from '../../layouts/Layout.astro';
 import AboutSection from '../../components/AboutSection.astro';
 import ShowcaseSection from '../../components/ShowcaseSection.astro';
 import ExperienceSection from '../../components/ExperienceSection.astro';
+import SkillsSection from '../../components/SkillsSection.astro';
+import EducationSection from '../../components/EducationSection.astro';
 import ClientAndWorkSection from '../../components/ClientAndWorkSection.astro';
+import TestimonialSection from '../../components/TestimonialSection.astro';
+import ContactSection from '../../components/ContactSection.astro';
+import NewsletterSection from '../../components/NewsletterSection.astro';
 import TextSection from '../../components/TextSection.astro';
 import Spacer from '../../components/Spacer.astro';
 import '../../styles/about.css';
 import '../../styles/showcase.css';
 import '../../styles/platform-links.css';
 import '../../styles/experience.css';
+import '../../styles/skills.css';
+import '../../styles/education.css';
 import '../../styles/client-and-work.css';
+import '../../styles/testimonial.css';
+import '../../styles/contact.css';
+import '../../styles/newsletter.css';
 import '../../styles/text-section.css';
 import { useTranslations } from '../../i18n';
 import { siteConfig } from '../../config/site';
@@ -23,7 +33,12 @@ const t = useTranslations(locale);
   {siteConfig.sections.about && <AboutSection locale={locale} />}
   {siteConfig.sections.showcase && <ShowcaseSection locale={locale} />}
   {siteConfig.sections.experience && <ExperienceSection locale={locale} />}
+  {siteConfig.sections.skills && <SkillsSection locale={locale} />}
+  {siteConfig.sections.education && <EducationSection locale={locale} />}
   {siteConfig.sections.clientAndWork && <ClientAndWorkSection locale={locale} />}
+  {siteConfig.sections.testimonial && <TestimonialSection locale={locale} />}
+  {siteConfig.sections.contact && <ContactSection locale={locale} />}
+  {siteConfig.sections.newsletter && <NewsletterSection locale={locale} />}
   {
     siteConfig.sections.extraContent && (
       <>

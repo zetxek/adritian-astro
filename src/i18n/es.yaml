@@ -49,6 +49,13 @@
 "contact_phone_heading": "Mi teléfono"
 "contact_email_heading": "Mi correo"
 "contact_location_heading": "Mi ubicación"
+## Homepage newsletter
+"newsletter_title": "Subscríbete"
+"newsletter_placeholder": "Tu correo"
+"newsletter_button": "Subscríbete"
+"newsletter_success_message": "¡Gracias por suscribirte!"
+"newsletter_error_message": "Algo ha fallado, por favor inténtalo de nuevo."
+"newsletter_note": "Respetamos tu privacidad y nunca compartiremos tus datos."
 ## Homepage extra content (text-section demo)
 "extra_content_title": "Contenido extra (centrado)"
 "extra_content_body": "También puedes usar el componente <code>TextSection</code> para añadir textos centrados."

@@ -1,0 +1,77 @@
+---
+import { useTranslations } from '../i18n';
+import { siteConfig } from '../config/site';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const { formAction, formMethod } = siteConfig.newsletter;
+---
+
+<section id="newsletter" class="section section--cta">
+  <div class="container d-flex justify-content-center align-items-center">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h2>{t('newsletter_title')}</h2>
+        <div class="rad-subscription-group">
+          <form id="rad-subscription" action={formAction} method={formMethod}>
+            <input
+              id="rad-subscription-email"
+              type="email"
+              name="email"
+              class="form-control"
+              aria-describedby="emailHelp"
+              placeholder={t('newsletter_placeholder')}
+              aria-label={t('newsletter_placeholder')}
+            />
+            <button type="submit" id="rad-subscription-submit" class="btn btn-light btn-rounded">
+              {t('newsletter_button')}
+            </button>
+          </form>
+          <div id="rad-subscription-success" class="d-none" role="status" aria-live="polite">
+            <p class="lead" set:html={t('newsletter_success_message')} />
+          </div>
+          <div id="rad-subscription-fail" class="d-none" role="alert" aria-live="assertive">
+            <p set:html={t('newsletter_error_message')} />
+          </div>
+        </div>
+        <small id="emailHelp" class="form-text text-muted" set:html={t('newsletter_note')} />
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#rad-subscription');
+  const submitButton = document.querySelector<HTMLButtonElement>('#rad-subscription-submit');
+  const successEl = document.querySelector<HTMLElement>('#rad-subscription-success');
+  const failEl = document.querySelector<HTMLElement>('#rad-subscription-fail');
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const email = (document.querySelector<HTMLInputElement>('#rad-subscription-email')?.value ?? '').trim();
+
+    submitButton?.classList.add('is-loading');
+    try {
+      await fetch(form.action, {
+        method: form.method || 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      form.classList.add('d-none');
+      successEl?.classList.remove('d-none');
+      successEl?.classList.add('d-flex');
+    } catch {
+      form.classList.add('d-none');
+      failEl?.classList.remove('d-none');
+      failEl?.classList.add('d-flex');
+    } finally {
+      submitButton?.classList.remove('is-loading');
+    }
+  });
+</script>

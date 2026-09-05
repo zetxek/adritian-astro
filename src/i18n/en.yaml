@@ -49,6 +49,13 @@
 "contact_phone_heading": "My phone"
 "contact_email_heading": "My mail"
 "contact_location_heading": "My location"
+## Homepage newsletter
+"newsletter_title": "Stay updated"
+"newsletter_placeholder": "Enter your email"
+"newsletter_button": "Subscribe"
+"newsletter_success_message": "Thank you for subscribing!"
+"newsletter_error_message": "Something went wrong, please try again."
+"newsletter_note": "We respect your privacy and will <strong>never</strong> share your data."
 ## Homepage extra content (text-section demo)
 "extra_content_title": "Extra (centered) content"
 "extra_content_body": "You can also use the <code>TextSection</code> component to add centered texts."
