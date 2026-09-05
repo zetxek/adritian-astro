@@ -1,0 +1,27 @@
+---
+interface Props {
+  sectionId?: string;
+  title?: string;
+  subtitle?: string;
+  centered?: boolean;
+}
+
+const { sectionId = '', title = '', subtitle = '', centered = false } = Astro.props;
+
+const containerClass = centered ? 'container d-flex justify-content-center align-items-center' : 'container';
+const columnClass = centered ? 'col-12 text-center' : 'col-12';
+---
+
+<section id={sectionId || undefined} class="section-text section section--border-bottom">
+  <div class={containerClass}>
+    <div class="row">
+      <div class={columnClass}>
+        {title && <h2 class="section__title">{title}</h2>}
+        {subtitle && <p class="section__subtitle">{subtitle}</p>}
+        <div class="text-section__content">
+          <slot />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

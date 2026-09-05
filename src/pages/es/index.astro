@@ -1,13 +1,37 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import AboutSection from '../../components/AboutSection.astro';
+import ShowcaseSection from '../../components/ShowcaseSection.astro';
 import ExperienceSection from '../../components/ExperienceSection.astro';
+import ClientAndWorkSection from '../../components/ClientAndWorkSection.astro';
+import TextSection from '../../components/TextSection.astro';
+import Spacer from '../../components/Spacer.astro';
+import '../../styles/about.css';
+import '../../styles/showcase.css';
+import '../../styles/platform-links.css';
 import '../../styles/experience.css';
+import '../../styles/client-and-work.css';
+import '../../styles/text-section.css';
 import { useTranslations } from '../../i18n';
+import { siteConfig } from '../../config/site';
 
 const locale = 'es';
 const t = useTranslations(locale);
 ---
 
 <Layout locale={locale} title={t('head_title')} description={t('head_description')}>
-  <ExperienceSection locale={locale} />
+  {siteConfig.sections.about && <AboutSection locale={locale} />}
+  {siteConfig.sections.showcase && <ShowcaseSection locale={locale} />}
+  {siteConfig.sections.experience && <ExperienceSection locale={locale} />}
+  {siteConfig.sections.clientAndWork && <ClientAndWorkSection locale={locale} />}
+  {
+    siteConfig.sections.extraContent && (
+      <>
+        <Spacer size="large" />
+        <TextSection sectionId="extra-content" title={t('extra_content_title')} centered>
+          <p set:html={t('extra_content_body')} />
+        </TextSection>
+      </>
+    )
+  }
 </Layout>

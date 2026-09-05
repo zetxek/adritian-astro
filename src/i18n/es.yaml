@@ -26,3 +26,13 @@
 "experience_button3": "Ver todo"
 "experience_button3_url": "/experience"
 "experience_fallback_notice": "Mostrado en inglés — todavía no traducido."
+"fallback_notice": "Mostrado en inglés — todavía no traducido."
+## Homepage about
+"about_title": "¿Quién soy?"
+"about_content": "Este contenido usa el componente <code>AboutSection</code>. <br/>Puedes escribir <code>HTML</code>, siempre que lo <em>envuelvas</em> correctamente."
+"about_button": "Ver mis habilidades"
+## Homepage client & work
+"client_work_title": "Una selección de mi trabajo"
+## Homepage extra content (text-section demo)
+"extra_content_title": "Contenido extra (centrado)"
+"extra_content_body": "También puedes usar el componente <code>TextSection</code> para añadir textos centrados."

@@ -29,21 +29,35 @@ export interface SiteConfig {
   footerNotice: Record<string, string>;
   /** Per-locale header nav links, matches Hugo's languages.<lang>.menus.header */
   headerMenu: Record<string, NavLink[]>;
-  /** Section toggles — which homepage sections are enabled. Only `experience`
-   * is built in Phase 1; the rest are placeholders for later phases. */
+  /** Section toggles — which homepage sections are enabled, and in what
+   * order pages/en(or es)/index.astro renders them. Phase 1 built `experience`;
+   * Phase 2 adds `about`, `showcase`, `clientAndWork`, and `extraContent`
+   * (a plain text-section demo block). `education`/`testimonial`/`contact`/
+   * `newsletter` remain placeholders for later phases. */
   sections: {
-    experience: boolean;
-    showcase: boolean;
     about: boolean;
+    showcase: boolean;
+    experience: boolean;
     education: boolean;
     clientAndWork: boolean;
     testimonial: boolean;
     contact: boolean;
     newsletter: boolean;
+    extraContent: boolean;
   };
   experience: {
     /** Matches Hugo's params.homepageExperienceCount */
     homepageCount: number;
+  };
+  /** Social/platform icon links, rendered by PlatformLinks. `icon` selects
+   * an inline SVG from PlatformLinks' icon map. */
+  platformLinks: {
+    icon: string;
+    label: string;
+    url: string;
+  }[];
+  about: {
+    buttonUrl: string;
   };
 }
 
@@ -78,16 +92,28 @@ export const siteConfig: SiteConfig = {
     ],
   },
   sections: {
+    about: true,
+    showcase: true,
     experience: true,
-    showcase: false,
-    about: false,
     education: false,
-    clientAndWork: false,
+    clientAndWork: true,
     testimonial: false,
     contact: false,
     newsletter: false,
+    extraContent: true,
   },
   experience: {
     homepageCount: 6,
+  },
+  platformLinks: [
+    { icon: 'facebook', label: 'Facebook', url: 'https://facebook.com/yourpage' },
+    { icon: 'x-twitter', label: 'X (Twitter)', url: 'https://twitter.com/zetxek' },
+    { icon: 'linkedin', label: 'LinkedIn', url: 'https://www.linkedin.com/in/adrianmoreno/' },
+    { icon: 'github', label: 'GitHub', url: 'https://github.com/zetxek' },
+    { icon: 'instagram', label: 'Instagram', url: 'https://www.instagram.com/zetxek/' },
+    { icon: 'youtube', label: 'YouTube', url: 'https://youtube.com' },
+  ],
+  about: {
+    buttonUrl: '/skills',
   },
 };

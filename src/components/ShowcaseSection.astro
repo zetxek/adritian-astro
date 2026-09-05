@@ -1,0 +1,49 @@
+---
+import { Picture } from 'astro:assets';
+import { getLocalizedCollection } from '../i18n/mergeContent';
+import { useTranslations } from '../i18n';
+import PlatformLinks from './PlatformLinks.astro';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const [{ entry, isFallback }] = await getLocalizedCollection('showcase', locale);
+const { title, subtitle, description, buttonText, buttonUrl, image } = entry.data;
+---
+
+<section id="showcase" class="rad-showcase rad-showcase--index">
+  <div class="showcase-section row flex-column-reverse flex-md-row">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+      <h1 class="display-1">{title}</h1>
+      <h2 class="display-5"><span>{subtitle}</span></h2>
+      <div class="lead" set:html={description} />
+      {isFallback && <div class="showcase__fallback-badge">{t('fallback_notice')}</div>}
+      {
+        buttonText && (
+          <a href={buttonUrl} class="btn btn-primary">
+            {buttonText}
+          </a>
+        )
+      }
+      <PlatformLinks />
+    </div>
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 profile-image">
+      {image && (
+        <Picture
+          src={image}
+          alt={title}
+          width={600}
+          height={583}
+          densities={[1, 2]}
+          formats={['webp']}
+          loading="lazy"
+          decoding="async"
+        />
+      )}
+    </div>
+  </div>
+</section>

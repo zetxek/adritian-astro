@@ -1,0 +1,6 @@
+title: "Showcase section"
+subtitle: "Subtitle - coming from content data"
+description: "<strong>Strong</strong>, <em>italic</em> and normal text. This comes from the showcase content data file, using the <code>ShowcaseSection</code> component.<br/>Below you can see the social links, provided by the <code>PlatformLinks</code> component."
+buttonText: "Contact"
+buttonUrl: "mailto:hello@example.com"
+image: "../images/showcase.png"

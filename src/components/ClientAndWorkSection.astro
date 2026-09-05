@@ -1,0 +1,105 @@
+---
+import { Picture } from 'astro:assets';
+import { render } from 'astro:content';
+import { getLocalizedCollection } from '../i18n/mergeContent';
+import { useTranslations } from '../i18n';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const clients = (await getLocalizedCollection('clients', locale)).sort(
+  (a, b) => b.entry.data.date.valueOf() - a.entry.data.date.valueOf()
+);
+const projects = (await getLocalizedCollection('projects', locale)).sort(
+  (a, b) => b.entry.data.date.valueOf() - a.entry.data.date.valueOf()
+);
+
+const renderedProjects = await Promise.all(
+  projects.map(async ({ entry, isFallback }) => ({ entry, isFallback, Content: (await render(entry)).Content }))
+);
+---
+
+<section id="client-and-work-section" class="section-client-and-work section section--border-bottom">
+  <div class="client-works-container">
+    <h2 class="section__title">{t('client_work_title')}</h2>
+
+    <div class="row row--padded">
+      <div class="col-12">
+        <div class="clients">
+          {
+            clients.map(({ entry, isFallback }) => (
+              <div class="clients__item" data-locale={isFallback ? 'en (fallback)' : locale}>
+                <a href={entry.data.link} aria-label={`Link to the client site for ${entry.data.title} (opens in a new window)`} target="_blank" rel="noopener noreferrer">
+                  <Picture
+                    src={entry.data.logo}
+                    alt={`${entry.data.title} logo`}
+                    class="portfolio-project img-responsive"
+                    width={130}
+                    height={30}
+                    densities={[1, 2]}
+                    formats={['webp']}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </a>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    {
+      renderedProjects.map(({ entry, isFallback, Content }, index) => {
+        const even = index % 2 === 0;
+        return (
+          <div class={`row row--padded flex-column-reverse flex-md-row ${even ? 'even-row' : 'uneven-row'}`} data-locale={isFallback ? 'en (fallback)' : locale}>
+            {!even && (
+              <div class="col-12 col-md-7 pl-md-0 text-md-end not-even order-2 order-md-1">
+                <Picture
+                  src={entry.data.image}
+                  alt={entry.data.title}
+                  class="picture-works odd"
+                  width={679}
+                  height={447}
+                  densities={[1, 2]}
+                  formats={['webp']}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            )}
+            <div class="col-12 col-md-5 mt-4 mt-md-0 my-md-auto order-1 order-md-2">
+              <h3>{entry.data.title}</h3>
+              <div class="lead">
+                <Content />
+              </div>
+              <a href={entry.data.buttonUrl} class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                {entry.data.buttonText}
+              </a>
+            </div>
+            {even && (
+              <div class="col-12 col-md-7 pl-md-0 text-md-end order-3">
+                <Picture
+                  src={entry.data.image}
+                  alt={entry.data.title}
+                  class="picture-works even"
+                  width={679}
+                  height={447}
+                  densities={[1, 2]}
+                  formats={['webp']}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            )}
+          </div>
+        );
+      })
+    }
+  </div>
+</section>

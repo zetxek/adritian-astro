@@ -1,0 +1,31 @@
+.section-about {
+  padding-top: 3rem;
+}
+
+/* Ported from assets/scss/_raditian.scss — .about__profile-picture */
+.about__profile-picture {
+  flex: 0 0 calc(100% + 80px);
+  max-width: calc(100% + 80px);
+  width: calc(100% + 80px);
+  margin-left: -40px;
+  margin-right: -40px;
+  margin-top: 40px;
+}
+
+.about__profile-picture img {
+  min-width: 200px;
+  min-height: 200px;
+  max-width: 100%;
+  height: auto;
+}
+
+@media (min-width: 768px) {
+  .about__profile-picture {
+    margin-top: 0;
+    flex: 0 0 50%;
+    max-width: 50%;
+    width: 50%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}

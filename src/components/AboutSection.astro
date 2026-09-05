@@ -1,0 +1,35 @@
+---
+import { Picture } from 'astro:assets';
+import { useTranslations } from '../i18n';
+import { siteConfig } from '../config/site';
+import portrait from '../assets/about/user-picture.png';
+
+interface Props {
+  locale: string;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<section id="about" class="section-about section pb-0">
+  <div class="row d-flex flex-column-reverse flex-md-row">
+    <div class="about__profile-picture col-12 col-md-6">
+      <Picture
+        src={portrait}
+        alt={t('about_title')}
+        width={600}
+        height={573}
+        densities={[1, 2]}
+        formats={['webp']}
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+    <div class="col-12 col-md-6 my-auto">
+      <h2 class="section__title">{t('about_title')}</h2>
+      <div class="about-me content" set:html={t('about_content')} />
+      <a href={siteConfig.about.buttonUrl} class="btn btn-primary mt-3">{t('about_button')}</a>
+    </div>
+  </div>
+</section>

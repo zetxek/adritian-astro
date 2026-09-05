@@ -1,0 +1,6 @@
+title: "Sección destacada"
+subtitle: "Subtítulo - viene del fichero de datos de contenido"
+description: "Texto <strong>en negrita</strong>, <em>cursiva</em> y normal. Esto viene del fichero de datos de la sección destacada, usando el componente <code>ShowcaseSection</code>.<br/>Debajo puedes ver los enlaces sociales, proporcionados por el componente <code>PlatformLinks</code>."
+buttonText: "Contacto"
+buttonUrl: "mailto:hello@example.com"
+image: "../images/showcase.png"

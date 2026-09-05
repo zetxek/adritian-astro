@@ -1,0 +1,48 @@
+/* Ported from assets/scss/_raditian.scss — .rad-showcase */
+.rad-showcase {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  padding-top: 3rem;
+}
+
+.rad-showcase .display-1 {
+  width: 100%;
+  font-size: 32px;
+}
+
+@media (min-width: 968px) {
+  .rad-showcase .display-1 {
+    font-size: 48px;
+  }
+}
+
+.rad-showcase .display-5 span {
+  display: block;
+  margin-top: 5px;
+  font-weight: 300;
+}
+
+.rad-showcase .lead {
+  width: 100%;
+}
+
+.profile-image img {
+  max-inline-size: 100%;
+  block-size: auto;
+  margin-top: 40px;
+}
+
+.showcase__fallback-badge {
+  display: inline-block;
+  margin: 0.5rem 0;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.75rem;
+  color: #7a5b00;
+  background: #fff3cd;
+  border: 1px solid #ffe69c;
+  border-radius: 0.25rem;
+}

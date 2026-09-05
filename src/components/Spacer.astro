@@ -1,0 +1,17 @@
+---
+interface Props {
+  size?: 'small' | 'medium' | 'large' | 'xlarge';
+}
+
+const { size = 'medium' } = Astro.props;
+
+// Matches shortcodes/spacer.html's size -> Bootstrap spacing utility mapping.
+const classBySize: Record<string, string> = {
+  small: 'pt-3',
+  medium: 'pt-5',
+  large: 'pt-5 mt-4',
+  xlarge: 'pt-5 mt-5',
+};
+---
+
+<div class={`spacer ${classBySize[size]}`}></div>
