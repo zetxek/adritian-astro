@@ -18,7 +18,7 @@
 }
 
 .testimonial__author-image {
-  margin-right: 16px;
+  margin-inline-end: 16px;
   width: 52px;
   height: 52px;
   border-radius: 100%;

@@ -57,7 +57,7 @@ a:hover {
 /* Ported from assets/scss/adritian.scss — skip-to-content link */
 .skip-to-content-link {
   position: absolute;
-  left: -9999px;
+  inset-inline-start: -9999px;
   z-index: 999;
   padding: 1em;
   background-color: #fff;
@@ -67,7 +67,7 @@ a:hover {
 
 .skip-to-content-link:focus,
 .skip-to-content-link:focus-visible {
-  left: 50%;
+  inset-inline-start: 50%;
   transform: translateX(-50%);
   opacity: 1;
 }
@@ -138,7 +138,7 @@ li.dropdown-item.current.selected {
 }
 
 li.dropdown-item.choice a {
-  padding-left: 30px;
+  padding-inline-start: 30px;
 }
 
 /* Ported from assets/scss/_raditian.scss — footer */
@@ -169,6 +169,10 @@ li.dropdown-item.choice a {
 @media (min-width: 992px) {
   .ml-lg-auto,
   .mx-lg-auto {
-    margin-left: auto !important;
+    /* Bootstrap 5 dropped .ml-*; this replicates Bootstrap 4's ml-lg-auto
+       used in Header.astro's markup. margin-inline-start (not margin-left)
+       so it still pushes nav items to the far end of the reading direction
+       under dir="rtl". */
+    margin-inline-start: auto !important;
   }
 }

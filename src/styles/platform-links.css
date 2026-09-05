@@ -1,18 +1,18 @@
 /* Ported from assets/scss/_raditian.scss — .platform-links */
 .platform-links {
   margin-top: 40px;
-  margin-right: -5px;
+  margin-inline-end: -5px;
 }
 
 @media (min-width: 992px) {
   .platform-links {
-    margin-right: -10px;
+    margin-inline-end: -10px;
   }
 }
 
 .platform-links__icon {
   display: inline-flex;
-  margin-right: 5px;
+  margin-inline-end: 5px;
   color: #000;
 }
 
@@ -27,6 +27,6 @@
 
 @media (min-width: 992px) {
   .platform-links__icon {
-    margin-right: 10px;
+    margin-inline-end: 10px;
   }
 }

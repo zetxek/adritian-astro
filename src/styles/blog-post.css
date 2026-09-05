@@ -15,7 +15,7 @@
 
 .post-tags {
   list-style: none;
-  padding-left: 0;
+  padding-inline-start: 0;
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
@@ -76,8 +76,8 @@
 }
 
 .post-content blockquote {
-  border-left: 4px solid var(--bs-primary);
-  padding-left: 1rem;
+  border-inline-start: 4px solid var(--bs-primary);
+  padding-inline-start: 1rem;
   color: var(--bs-secondary-color);
   margin: 1.5rem 0;
 }

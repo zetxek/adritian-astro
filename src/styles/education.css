@@ -11,7 +11,7 @@
 .education::before {
   content: '';
   position: absolute;
-  left: 90px;
+  inset-inline-start: 90px;
   top: 0;
   width: 75px;
   height: 100%;

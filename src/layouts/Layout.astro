@@ -1,11 +1,13 @@
 ---
-import 'bootstrap/dist/css/bootstrap.min.css';
+import bootstrapCssUrl from 'bootstrap/dist/css/bootstrap.min.css?url';
+import bootstrapRtlCssUrl from 'bootstrap/dist/css/bootstrap.rtl.min.css?url';
 import '../styles/global.css';
 import '../styles/breadcrumbs.css';
+import '../styles/rtl.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import { useTranslations, locales, defaultLocale, switchLocalePath } from '../i18n';
+import { useTranslations, locales, defaultLocale, switchLocalePath, isRtl } from '../i18n';
 import { siteConfig } from '../config/site';
 import { buildSiteJsonLd, buildBreadcrumbJsonLd, absoluteUrl, type BreadcrumbItem } from '../lib/seo';
 
@@ -24,6 +26,18 @@ interface Props {
 
 const { locale, title, description, image, breadcrumbs, jsonLd = [] } = Astro.props;
 const t = useTranslations(locale);
+const dir = isRtl(locale) ? 'rtl' : 'ltr';
+
+// Bootstrap ships a separate pre-built RTL stylesheet (mirrored selectors,
+// not just a couple of overrides) rather than a runtime dir switch, so the
+// two builds are loaded as alternatives, never both — matches Hugo's own
+// theme, which has no RTL support at all (this is new for the Astro port).
+// Resolved via `?url` + an explicit <link> (not a side-effect `import
+// '...css'`) because Astro's static CSS bundling links every module reached
+// by either branch of a conditional import on every page — a side-effect
+// import here would ship (and, worse, order-depending-on-branch, silently
+// let one override the other) both stylesheets on every locale.
+const bootstrapHref = dir === 'rtl' ? bootstrapRtlCssUrl : bootstrapCssUrl;
 
 const pageTitle = title ? `${title} | ${siteConfig.title}` : siteConfig.title;
 const pageDescription = description ?? t('head_description');
@@ -54,11 +68,13 @@ const allJsonLd = [
 ---
 
 <!DOCTYPE html>
-<html lang={locale} dir="ltr">
+<html lang={locale} dir={dir}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+
+    <link rel="stylesheet" href={bootstrapHref} />
 
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />

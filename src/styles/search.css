@@ -25,9 +25,9 @@
 }
 
 #search-query {
-  padding-left: 1rem;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+  padding-inline-start: 1rem;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
 }
 
 .search-section .input-group-text {

@@ -1,0 +1,25 @@
+/*
+ * RTL support (Phase 6 Task 3) — new for the Astro port, Hugo's theme has
+ * none. Two layers handle mirroring:
+ *
+ * 1. Bootstrap's own classes/components are mirrored by loading
+ *    bootstrap.rtl.min.css instead of bootstrap.min.css when the page
+ *    locale is RTL (see Layout.astro) — no overrides needed here.
+ * 2. This theme's own CSS (about.css, blog-post.css, global.css, etc.) was
+ *    converted in place to CSS logical properties (margin-inline-start,
+ *    padding-inline-start, border-inline-start, inset-inline-start,
+ *    border-start-start-radius, ...) instead of physical left/right
+ *    properties, so it mirrors automatically under `dir="rtl"` with no
+ *    duplicate ruleset here either.
+ *
+ * What's left is content that logical properties can't express: a
+ * literal glyph that visually points the wrong way once the reading
+ * direction flips.
+ */
+
+/* Breadcrumb separator: '›' (U+203A) points the correct reading direction
+   in LTR; RTL needs '‹' (U+2039) so the chevron still points from parent
+   toward child. */
+[dir='rtl'] .breadcrumb-item:not(:last-child)::after {
+  content: '\2039';
+}

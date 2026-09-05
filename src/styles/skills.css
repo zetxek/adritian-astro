@@ -51,7 +51,7 @@
   background-color: #e9ecef;
   border-radius: 20px;
   font-size: 0.8rem;
-  margin-left: 10px;
+  margin-inline-start: 10px;
 }
 
 .skill-description {

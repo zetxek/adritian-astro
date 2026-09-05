@@ -57,7 +57,7 @@
   border-radius: 999px;
   padding: 0.15rem 0.6rem;
   font-size: 0.75rem;
-  margin-right: 0.25rem;
+  margin-inline-end: 0.25rem;
 }
 
 [data-bs-theme='dark'] .related-post-card .tags .tag {

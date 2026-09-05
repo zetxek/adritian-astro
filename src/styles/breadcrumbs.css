@@ -29,7 +29,7 @@
 
 .breadcrumb-item:not(:last-child)::after {
   content: '\203A';
-  margin-left: 0.5rem;
+  margin-inline-start: 0.5rem;
   font-size: 1.2rem;
   color: rgba(0, 0, 0, 0.4);
   font-weight: 300;

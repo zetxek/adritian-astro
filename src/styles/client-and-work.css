@@ -14,12 +14,12 @@
   justify-content: flex-start;
   align-items: center;
   margin-bottom: -30px;
-  margin-left: -20px;
+  margin-inline-start: -20px;
 }
 
 @media (min-width: 768px) {
   .clients {
-    margin-left: -50px;
+    margin-inline-start: -50px;
   }
 }
 
@@ -32,7 +32,7 @@
 .clients__item {
   opacity: 0.5;
   margin-bottom: 30px;
-  margin-left: 20px;
+  margin-inline-start: 20px;
   transition-property: opacity;
   transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
   transition-duration: 0.2s;
@@ -44,7 +44,7 @@
 
 @media (min-width: 768px) {
   .clients__item {
-    margin-left: 50px;
+    margin-inline-start: 50px;
   }
 }
 
